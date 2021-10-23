@@ -14,7 +14,7 @@ const seq = new Sequelize(MYSQL_HOST_DB, MYSQL_USER, MYSQL_HOST_PASSWORD, {
 
 // seq
 //   .authenticate()
-//   .then(() => {
+//   .then(git() => {
 //     console.log("数据库连接成功");
 //   })
 //   .catch((err) => {
