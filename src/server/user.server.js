@@ -14,11 +14,11 @@ class UserServer {
     user_name && Object.assign(whereOpt, { user_name });
     password && Object.assign(whereOpt, { password });
     is_anmin && Object.assign(whereOpt, { is_anmin });
-    const res = User.findOne({
-      attributes: ["id", "password", "is_admin", "user_name"],
+    console.log(whereOpt);
+    const res = await User.findOne({
+      // attributes: ["id", "password", "is_admin", "user_name"],
       where: whereOpt,
     });
-
     return res ? res.dataValues : null;
   }
 }

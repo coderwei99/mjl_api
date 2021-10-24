@@ -1,8 +1,11 @@
+const bcrypt = require("bcryptjs");
+
 const { getUserInfo } = require("../server/user.server");
 
 const {
   userAlreadyExited,
   userFormateError,
+  userRegisterError,
 } = require("../consitant/error.type");
 
 const userValidator = async (ctx, next) => {
@@ -17,19 +20,38 @@ const userValidator = async (ctx, next) => {
 
   await next();
 };
-
 const verifyUser = async (ctx, next) => {
   //  验证前端传过来的数据是否合理:用户名已经存在
   const { user_name } = ctx.request.body;
-  if (await getUserInfo(user_name)) {
-    console.error("用户已经存在", ctx.request.body);
-    ctx.app.emit("error", userAlreadyExited, ctx);
+
+  try {
+    const res = await getUserInfo({ user_name });
+    console.log(res, "12312312");
+    if (res) {
+      console.error("用户名已存在", { user_name });
+      ctx.app.emit("error", userAlreadyExited, ctx);
+      return;
+    }
+  } catch (err) {
+    ctx.app.emit("error", userRegisterError, ctx);
     return;
   }
+  await next();
+};
+
+// 对密码进行加密
+const cryptPassword = async (ctx, next) => {
+  const { password } = ctx.request.body;
+
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(password, salt);
+  ctx.request.body.password = hash;
+
   await next();
 };
 
 module.exports = {
   userValidator,
   verifyUser,
+  cryptPassword,
 };
