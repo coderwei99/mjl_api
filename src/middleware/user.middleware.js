@@ -6,6 +6,9 @@ const {
   userAlreadyExited,
   userFormateError,
   userRegisterError,
+  userDoesNotExited,
+  userLoginError,
+  invalidPassword,
 } = require("../consitant/error.type");
 
 const userValidator = async (ctx, next) => {
@@ -50,8 +53,34 @@ const cryptPassword = async (ctx, next) => {
   await next();
 };
 
+const verifyLogin = async (ctx, next) => {
+  // 1.判断用户是否存在
+  const { user_name, password } = ctx.request.body;
+
+  try {
+    const res = await getUserInfo({ user_name });
+    if (!res) {
+      console.error("用户不存在", { user_name });
+      ctx.app.emit("error", userDoesNotExited, ctx);
+      return;
+    }
+    // 2.密码是否正确
+    if (!bcrypt.compareSync(password, res.password)) {
+      ctx.app.emit("error", invalidPassword, ctx);
+      return;
+    }
+  } catch (err) {
+    console.error(err);
+    ctx.app.emit("error", userLoginError, ctx);
+    return;
+  }
+
+  await next();
+};
+
 module.exports = {
   userValidator,
   verifyUser,
   cryptPassword,
+  verifyLogin,
 };
