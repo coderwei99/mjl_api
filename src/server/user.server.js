@@ -21,6 +21,18 @@ class UserServer {
     });
     return res ? res.dataValues : null;
   }
+
+  // 更新数据库 ----> 根据id查询到数据  可以修改用户名、密码、是否为管理员
+  async updataById({ id, user_name, password, is_admin }) {
+    const whereOpt = { id };
+    const newUser = {};
+    user_name && Object.assign(newUser, { user_name });
+    password && Object.assign(newUser, { password });
+    is_admin && Object.assign(newUser, { is_admin });
+    const res = await User.update(newUser, { where: whereOpt });
+    console.log(res);
+    return res[0] > 0 ? true : false;
+  }
 }
 
 module.exports = new UserServer();

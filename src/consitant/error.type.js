@@ -29,4 +29,39 @@ module.exports = {
     message: "密码不正确",
     result: null,
   },
+  modifyPasswordfail: {
+    code: "10007",
+    message: "修改密码失败",
+    result: null,
+  },
+  TokenExpiredError: {
+    code: "10101",
+    message: "token已过期",
+    result: null,
+  },
+  JsonWebTokenError: {
+    code: "10102",
+    message: "无效的token",
+    result: null,
+  },
+  upLoadImageError: {
+    code: "10201",
+    message: "上传图片失败",
+    result: null,
+  },
+  formatParamsError: {
+    code: "10202",
+    message: "参数不符合格式",
+    result: null,
+  },
+  publishGoodsError: {
+    code: "10203",
+    message: "发布商品失败",
+    result: null,
+  },
+  updataGoodsError: {
+    code: "10204",
+    message: "无效的商品ID",
+    result: null,
+  },
 };
