@@ -4,8 +4,7 @@ const router = new Router({ prefix: "/cart" });
 
 const { auth } = require("../middleware/auth.middleware");
 const { cartFarmat } = require("../middleware/cart.middleware");
-router.post("/", auth, cartFarmat, (ctx) => {
-  ctx.body = ctx.state.user;
-});
+const { addGoods } = require("../controller/cart.controller");
+router.post("/", auth, cartFarmat, addGoods);
 
 module.exports = router;

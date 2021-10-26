@@ -64,4 +64,9 @@ module.exports = {
     message: "无效的商品ID",
     result: null,
   },
+  userHasInsql: {
+    code: "10205",
+    message: "无效的用户ID",
+    result: null,
+  },
 };
