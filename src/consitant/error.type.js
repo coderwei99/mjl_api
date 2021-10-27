@@ -74,4 +74,9 @@ module.exports = {
     message: "无效的用户ID",
     result: null,
   },
+  updataAddressError: {
+    code: "10301",
+    message: "无效的地址id",
+    result: null,
+  },
 };
