@@ -79,4 +79,9 @@ module.exports = {
     message: "无效的地址id",
     result: null,
   },
+  orderParamsError: {
+    code: "10401",
+    message: "携带参数格式有误",
+    result: null,
+  },
 };
