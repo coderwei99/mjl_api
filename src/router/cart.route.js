@@ -8,6 +8,7 @@ const {
   addGoods,
   getCartsGoods,
   patchCartsGoods,
+  remove,
 } = require("../controller/cart.controller");
 
 // 商品加入到购物车
@@ -43,4 +44,13 @@ router.patch(
 );
 
 // 删除购物车的商品
+router.delete(
+  "/",
+  auth,
+  cartFarmat({
+    ids: "array",
+  }),
+  remove
+);
+
 module.exports = router;

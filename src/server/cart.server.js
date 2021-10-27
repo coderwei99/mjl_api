@@ -7,7 +7,7 @@ const Cart = require("../model/cart_model");
 class cartServer {
   async createOrUpdate({ user_id, goods_id }) {
     //-----------------------------start-----------------------------------------
-    // 这个位置的两个判断条件可以考虑抽离成一个中间件，尽量保证createOrUpdate方法的
+    // 这个位置的两个判断条件可以考虑抽离成一个中间件，尽量保证createOrUpdate方法的职责单一
 
     // 判断用户id是否合法?  不合法返回1，在控制器进行判断
     const user_id_res = await User.findOne({
@@ -88,6 +88,21 @@ class cartServer {
     // 这里不能简写成上面那个样子，因为传进来的就是布尔值，true和false都是需要执行更新数据库的，直接判断的话会导致用户传进来的false，不执行后面的赋值语句
     selected !== undefined ? (res.selected = selected) : "";
     return await res.save();
+  }
+
+  async removeCartsGoood(params) {
+    const { user_id, goods_id } = params;
+    console.log(user_id, goods_id);
+    const res = await Cart.destroy({
+      // 根据当前登录用户的id，删除当前用户id收藏的商品（goods_id）,这时正常逻辑，去数据库删除当前用户收藏的商品
+      where: {
+        user_id,
+        goods_id: {
+          [Op.in]: goods_id,
+        },
+      },
+    });
+    return res;
   }
 }
 

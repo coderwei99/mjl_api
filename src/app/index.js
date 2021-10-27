@@ -16,6 +16,7 @@ app.use(
       uploadDir: path.join(__dirname, "../uploads"),
       keepExtensions: true,
     },
+    parsedMethods: ["POST", "PUT", "PATCH", "DELETE"],
   })
 );
 

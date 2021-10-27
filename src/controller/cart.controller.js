@@ -2,6 +2,7 @@ const {
   createOrUpdate,
   findCartsGoods,
   updataCartsGood,
+  removeCartsGoood,
 } = require("../server/cart.server");
 const {
   updataGoodsError,
@@ -64,6 +65,18 @@ class cartController {
     } else {
       ctx.app.emit("error", URLParamsError, ctx);
     }
+  }
+
+  async remove(ctx) {
+    const user_id = ctx.state.user.id;
+    const goods_id = ctx.request.body.ids;
+    const res = await removeCartsGoood({ user_id, goods_id });
+
+    ctx.body = {
+      code: 0,
+      message: "移除商品成功",
+      result: res,
+    };
   }
 }
 
