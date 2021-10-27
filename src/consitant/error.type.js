@@ -61,11 +61,16 @@ module.exports = {
   },
   updataGoodsError: {
     code: "10204",
-    message: "无效的商品ID",
+    message: "携带参数有误",
+    result: null,
+  },
+  URLParamsError: {
+    code: "10205",
+    message: "未找到需更新商品",
     result: null,
   },
   userHasInsql: {
-    code: "10205",
+    code: "10206",
     message: "无效的用户ID",
     result: null,
   },
