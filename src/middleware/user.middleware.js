@@ -9,7 +9,7 @@ const {
   userDoesNotExited,
   userLoginError,
   invalidPassword,
-} = require("../consitant/error.type");
+} = require("../consitant/error/error.type");
 
 const userValidator = async (ctx, next) => {
   const { user_name, password } = ctx.request.body;

@@ -1,7 +1,7 @@
 const seq = require("../db/seq");
 const { DataTypes } = require("sequelize");
 
-const address = seq.define("zd_address", {
+const address = seq.define("meijiali_address", {
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

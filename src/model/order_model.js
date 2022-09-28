@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 
 const seq = require("../db/seq");
 
-const Orders = seq.define("zd_orders", {
+const Orders = seq.define("meijiali_orders", {
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,

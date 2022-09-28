@@ -1,4 +1,4 @@
-const { orderParamsError } = require("../consitant/error.type");
+const { orderParamsError } = require("../consitant/error/error.type");
 
 const ordersFarmat = (rules) => {
   return async (ctx, next) => {

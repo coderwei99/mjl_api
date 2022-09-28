@@ -1,6 +1,9 @@
 const Goods = require("../model/goods_model");
 
 const createGoods = async (goods) => {
+  goods.specification = JSON.stringify(goods.specification)
+  goods.swiper_image = JSON.stringify(goods.swiper_image)
+  console.log('swiper', goods.swiper_image);
   const res = await Goods.create(goods);
   return res;
 };
@@ -20,6 +23,28 @@ const restoreGood = async (id) => {
   return res > 0 ? true : false;
 };
 
+
+// 返回某个分类的商品
+const findCategoryGoodsList = async ({ parentId: parent_id, pageNum = 1, pageSize = 10 }) => {
+  const offset = (pageNum - 1) * pageSize;
+  const { count, rows } = await Goods.findAndCountAll({
+    limit: pageSize * 1,
+    offset,
+    where: {
+      parent_id,
+    }
+  });
+  return {
+    pageNum,
+    pageSize,
+    total: count,
+    list: rows,
+  };
+};
+
+
+
+// 返回所有商品列表
 const findAllGoods = async (pageNum, pageSize) => {
   const offset = (pageNum - 1) * pageSize;
   const { count, rows } = await Goods.findAndCountAll({
@@ -33,10 +58,13 @@ const findAllGoods = async (pageNum, pageSize) => {
     list: rows,
   };
 };
+
+
 module.exports = {
   createGoods,
   updataGoods,
   removeGood,
   restoreGood,
   findAllGoods,
+  findCategoryGoodsList
 };

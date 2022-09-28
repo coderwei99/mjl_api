@@ -4,13 +4,17 @@ const {
   upLoadImageError,
   publishGoodsError,
   updataGoodsError,
-} = require("../consitant/error.type");
+} = require("../consitant/error/error.type");
+
+const { createGoodError } = require("../consitant/error/goods.errorType")
+
 const {
   createGoods,
   updataGoods,
   removeGood,
   restoreGood,
   findAllGoods,
+  findCategoryGoodsList
 } = require("../server/goods.server");
 class GoodsController {
   async upLoad(ctx, next) {
@@ -21,7 +25,7 @@ class GoodsController {
       ctx.body = {
         code: 0,
         message: "上传图片成功",
-        result: {
+        data: {
           goods_img: path.basename(file.path),
         },
       };
@@ -34,12 +38,11 @@ class GoodsController {
     const goods = ctx.request.body;
     try {
       const res = await createGoods(goods);
-      console.log(111);
       if (res) {
         ctx.body = {
           code: 0,
           message: "发布商品成功",
-          result: res,
+          data: res,
         };
       } else {
         ctx.app.emit("error", publishGoodsError, ctx);
@@ -55,7 +58,7 @@ class GoodsController {
         ctx.body = {
           code: 0,
           message: "修改商品成功",
-          result: null,
+          data: null,
         };
       } else {
         ctx.app.emit("error", updataGoodsError, ctx);
@@ -71,7 +74,7 @@ class GoodsController {
         ctx.body = {
           code: 0,
           message: "下架商品成功",
-          result: null,
+          data: null,
         };
       } else {
         ctx.app.emit("error", updataGoodsError, ctx);
@@ -87,7 +90,7 @@ class GoodsController {
         ctx.body = {
           code: 0,
           message: "上架商品成功",
-          result: null,
+          data: null,
         };
       } else {
         ctx.app.emit("error", updataGoodsError, ctx);
@@ -104,10 +107,32 @@ class GoodsController {
       ctx.body = {
         code: 0,
         message: "获取商品列表成功",
-        result: res,
+        data: res,
       };
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  // 查询某个分类的商品
+  async findCategoryGoods(ctx) {
+    try {
+      const res = await findCategoryGoodsList(ctx.request.query)
+      console.log(res, 'res');
+      if (res.list.length != 0) {
+        res.list.forEach(item => {
+          item.swiper_image = JSON.parse(item.swiper_image)
+          item.specification = JSON.parse(item.specification)
+        });
+      }
+      ctx.body = {
+        code: 200,
+        data: res
+      }
+    } catch (error) {
+      console.log(error);
+      createGoodError.data = error.errors
+      ctx.app.emit("error", createGoodError, ctx)
     }
   }
 }

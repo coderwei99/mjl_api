@@ -1,4 +1,4 @@
-const { formatParamsError } = require("../consitant/error.type");
+const { formatParamsError } = require("../consitant/error/error.type");
 
 const goodsFarmat = async (ctx, next) => {
   try {

@@ -6,7 +6,7 @@ const {
   setDeafultAction,
 } = require("../server/address.server");
 
-const { updataAddressError } = require("../consitant/error.type");
+const { updataAddressError } = require("../consitant/error/error.type");
 class Address {
   async createAddress(ctx) {
     const user_id = ctx.state.user.id;

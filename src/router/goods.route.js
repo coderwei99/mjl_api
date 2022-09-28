@@ -8,6 +8,7 @@ const {
   remove,
   restore,
   findAll,
+  findCategoryGoods
 } = require("../controller/goods.controller");
 
 const { goodsFarmat } = require("../middleware/goods.middleware");
@@ -29,6 +30,9 @@ router.post("/:id/off", auth, hadAdminPermission, remove);
 router.post("/:id/on", auth, hadAdminPermission, restore);
 
 // 查询所有商品数据
-router.get("/", findAll);
+router.get("/list", findAll);
+
+// 查询某个分类的商品数据
+router.get("/categoryList", findCategoryGoods);
 
 module.exports = router;

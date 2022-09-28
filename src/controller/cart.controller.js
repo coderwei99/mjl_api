@@ -8,7 +8,7 @@ const {
   updataGoodsError,
   userHasInsql,
   URLParamsError,
-} = require("../consitant/error.type");
+} = require("../consitant/error/error.type");
 
 class cartController {
   async addGoods(ctx) {

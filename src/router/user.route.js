@@ -4,6 +4,7 @@ const {
   register,
   login,
   changePassword,
+  wxLogin
 } = require("../controller/user.controller");
 
 const {
@@ -25,4 +26,8 @@ router.post("/login", userValidator, verifyLogin, login);
 
 // 修改密码
 router.patch("/", auth, cryptPassword, changePassword);
+
+// 小程序用户登录
+router.post("/wxLogin", wxLogin)
+
 module.exports = router;

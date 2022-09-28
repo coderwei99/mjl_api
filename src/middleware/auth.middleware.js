@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const {
   TokenExpiredError,
   JsonWebTokenError,
-} = require("../consitant/error.type");
+} = require("../consitant/error/error.type");
 
 // 导入秘钥
 const { JWT_SECRET } = require("../config/config.default");
@@ -22,6 +22,7 @@ const auth = async (ctx, next) => {
         return ctx.app.emit("error", JsonWebTokenError, ctx);
     }
   }
+
   await next();
 };
 
@@ -41,7 +42,7 @@ const hadAdminPermission = async (ctx, next) => {
         result: null,
       };
     }
-  } catch (err) {}
+  } catch (err) { }
 };
 module.exports = {
   auth,

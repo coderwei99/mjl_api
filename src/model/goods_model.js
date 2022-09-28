@@ -3,7 +3,7 @@ const { DataTypes } = require("sequelize");
 const seq = require("../db/seq");
 
 const Goods = seq.define(
-  "zd_goods",
+  "meijiali_goods",
   {
     goods_name: {
       type: DataTypes.STRING,
@@ -25,6 +25,26 @@ const Goods = seq.define(
       allowNull: false,
       comment: "商品图片的URL",
     },
+    parent_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "父级id",
+    },
+    specification: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      comment: "商品规格",
+    },
+    swiper_image: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      comment: "商品轮播图"
+    },
+    sales: {
+      type: DataTypes.DECIMAL,
+      defaultValue: 0,
+      comment: "商品销量"
+    }
   },
   {
     paranoid: true,

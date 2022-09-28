@@ -1,4 +1,4 @@
-const { updataGoodsError } = require("../consitant/error.type");
+const { updataGoodsError } = require("../consitant/error/error.type");
 
 const addressFarmat = (rules) => {
   return async (ctx, next) => {
