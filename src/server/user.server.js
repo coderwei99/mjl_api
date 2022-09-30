@@ -33,6 +33,38 @@ class UserServer {
     console.log(res);
     return res[0] > 0 ? true : false;
   }
+
+  // 查询用户 查询到返回用户信息 查询不到就新建
+  async findUserOrCreate({ openid, token }, { nickName, gender, city, province, country, avatarUrl }) {
+    try {
+
+      let res = await User.findOne({ where: { open_id: openid } })
+      console.log(res, 'res');
+      console.log('--------------------------------------------------');
+      console.log({ openid }, nickName, gender, city, province, country, avatarUrl);
+      console.log('--------------------------------------------------');
+
+      if (!res) {
+        // 新用户 缓存数据到数据库
+        res = await User.create({
+          user_name: nickName,
+          gender: gender,
+          open_id: openid,
+          city: city,
+          province: province,
+          country: country,
+          avatarUrl: avatarUrl,
+          uid: '1010' + String(new Date().getTime()).slice(0, 7),
+          phone: "",
+          access_token: "",
+          token,
+        })
+      }
+      return res.dataValues
+    } catch (error) {
+      console.log('error-=-------------------=========================', error);
+    }
+  }
 }
 
 module.exports = new UserServer();

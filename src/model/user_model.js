@@ -6,12 +6,11 @@ const User = seq.define("meijiali_user", {
   user_name: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
-    comment: "用户名需要是唯一",
+    comment: "用户名",
   },
   password: {
     type: DataTypes.CHAR(64),
-    allowNull: false,
+    defaultValue: '',
     comment: "密码",
   },
   open_id: {
@@ -34,11 +33,36 @@ const User = seq.define("meijiali_user", {
     unique: true,
     comment: "用户access_token"
   },
+  token: {
+    type: DataTypes.STRING,
+    unique: true,
+    comment: "用户token"
+  },
   is_admin: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: 0,
     comment: "是否为管理员,0:不是管理员，1:是管理员",
+  },
+  gender: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    comment: "用户性别,1为男生,2为女生,0为未知",
+  },
+  city: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    comment: "用户所在城市"
+  },
+  province: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    comment: "用户所在省城"
+  },
+  avatarUrl: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    comment: "用户头像"
   },
 });
 

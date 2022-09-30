@@ -60,11 +60,22 @@ const findAllGoods = async (pageNum, pageSize) => {
 };
 
 
+const getHotGoodsList = async () => {
+  const res = await Goods.findAll({
+    where: {
+      is_hot: true
+    }
+  })
+
+  return res
+}
+
 module.exports = {
   createGoods,
   updataGoods,
   removeGood,
   restoreGood,
   findAllGoods,
-  findCategoryGoodsList
+  findCategoryGoodsList,
+  getHotGoodsList
 };

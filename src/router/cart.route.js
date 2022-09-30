@@ -2,7 +2,7 @@ const Router = require("koa-router");
 
 const router = new Router({ prefix: "/carts" });
 
-const { auth } = require("../middleware/auth.middleware");
+const { diffChannelNo } = require("../middleware/auth.middleware");
 const { cartFarmat } = require("../middleware/cart.middleware");
 const {
   addGoods,
@@ -14,7 +14,7 @@ const {
 // 商品加入到购物车
 router.post(
   "/",
-  auth,
+  diffChannelNo,
   cartFarmat({
     goods_id: {
       type: "number",
@@ -24,12 +24,12 @@ router.post(
 );
 
 // 查询购物车信息
-router.get("/", auth, getCartsGoods);
+router.get("/", diffChannelNo, getCartsGoods);
 
 // 更新购物车信息
 router.patch(
   "/:id",
-  auth,
+  diffChannelNo,
   cartFarmat({
     number: {
       type: "number",
@@ -46,7 +46,7 @@ router.patch(
 // 删除购物车的商品
 router.delete(
   "/",
-  auth,
+  diffChannelNo,
   cartFarmat({
     ids: "array",
   }),

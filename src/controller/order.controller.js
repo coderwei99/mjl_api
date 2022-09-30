@@ -13,7 +13,7 @@ class OrderController {
       order_number,
     });
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "创建订单成功",
       result: res,
     };
@@ -23,7 +23,7 @@ class OrderController {
     const user_id = ctx.state.user.id;
     const { res, total } = await findAll(user_id);
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "获取商品列表",
       total,
       result: res,
@@ -35,7 +35,7 @@ class OrderController {
     const status = ctx.request.body.status;
     const res = await update(id, status);
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "更新商品成功",
       result: res,
     };

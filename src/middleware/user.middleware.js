@@ -78,9 +78,18 @@ const verifyLogin = async (ctx, next) => {
   await next();
 };
 
+
+// 对小程序的openid进行加密 当做token返回给前端
+const toCryptOpenid = async (openid) => {
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(openid, salt);
+  return hash
+};
+
 module.exports = {
   userValidator,
   verifyUser,
   cryptPassword,
   verifyLogin,
+  toCryptOpenid
 };

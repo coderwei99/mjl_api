@@ -14,6 +14,16 @@ const Carts = seq.define("meijiali_cart", {
     allowNull: false,
     comment: "用户id",
   },
+  specification: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    comment: "商品规格",
+  },
+  specification_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: "规格的名字"
+  },
   number: {
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -13,9 +13,10 @@ const {
 class cartController {
   async addGoods(ctx) {
     // 传递给server层user_id goods_id
-    const { goods_id } = ctx.request.body;
-    const user_id = ctx.state.user.id;
-    const res = await createOrUpdate({ user_id, goods_id });
+    let { goods_id, user_id, specification, count, name } = ctx.request.body;
+    specification = JSON.stringify(specification)
+    // const user_id = ctx.state.user.id;
+    const res = await createOrUpdate({ user_id, goods_id, specification, count, name });
     try {
       if (res === "1") {
         ctx.app.emit("error", userHasInsql, ctx);
@@ -23,9 +24,9 @@ class cartController {
         ctx.app.emit("error", updataGoodsError, ctx);
       } else {
         ctx.body = {
-          code: 0,
+          code: 200,
           message: "添加到购物车成功",
-          result: res,
+          data: res,
         };
       }
     } catch (err) {
@@ -35,14 +36,14 @@ class cartController {
 
   async getCartsGoods(ctx) {
     const { pageNumber = 1, pageSize = 10 } = ctx.request.query;
-    const user_id = ctx.state.user.id;
+    const user_id = ctx.request.query.user_id
 
     const res = await findCartsGoods({ pageNumber, pageSize, user_id });
 
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "购物车信息",
-      result: res,
+      data: res,
     };
   }
 
@@ -58,9 +59,9 @@ class cartController {
     });
     if (res) {
       ctx.body = {
-        code: 0,
+        code: 200,
         message: "更新购物车成功",
-        result: res,
+        data: res,
       };
     } else {
       ctx.app.emit("error", URLParamsError, ctx);
@@ -73,9 +74,9 @@ class cartController {
     const res = await removeCartsGoood({ user_id, goods_id });
 
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "移除商品成功",
-      result: res,
+      data: res,
     };
   }
 }

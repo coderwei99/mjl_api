@@ -13,7 +13,7 @@ const Goods = seq.define(
     goods_price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
-      comment: "商品价格",
+      comment: "商品价格优惠后的价格",
     },
     goods_num: {
       type: DataTypes.DECIMAL,
@@ -44,6 +44,26 @@ const Goods = seq.define(
       type: DataTypes.DECIMAL,
       defaultValue: 0,
       comment: "商品销量"
+    },
+    min_count_elivery: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+      comment: "商品起送数量"
+    },
+    is_hot: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      comment: "是否热点产品，热点商品展示到首页"
+    },
+    original_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      defaultValue: 0,
+      comment: "商品原价"
+    },
+    is_benefit: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      comment: "是否有优惠"
     }
   },
   {

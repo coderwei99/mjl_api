@@ -14,7 +14,8 @@ const {
   removeGood,
   restoreGood,
   findAllGoods,
-  findCategoryGoodsList
+  findCategoryGoodsList,
+  getHotGoodsList
 } = require("../server/goods.server");
 class GoodsController {
   async upLoad(ctx, next) {
@@ -23,7 +24,7 @@ class GoodsController {
     console.log(file);
     if (file) {
       ctx.body = {
-        code: 0,
+        code: 200,
         message: "上传图片成功",
         data: {
           goods_img: path.basename(file.path),
@@ -40,7 +41,7 @@ class GoodsController {
       const res = await createGoods(goods);
       if (res) {
         ctx.body = {
-          code: 0,
+          code: 200,
           message: "发布商品成功",
           data: res,
         };
@@ -56,7 +57,7 @@ class GoodsController {
       const res = await updataGoods(ctx.params.id, ctx.request.body);
       if (res) {
         ctx.body = {
-          code: 0,
+          code: 200,
           message: "修改商品成功",
           data: null,
         };
@@ -72,7 +73,7 @@ class GoodsController {
     try {
       if (res) {
         ctx.body = {
-          code: 0,
+          code: 200,
           message: "下架商品成功",
           data: null,
         };
@@ -88,7 +89,7 @@ class GoodsController {
     try {
       if (res) {
         ctx.body = {
-          code: 0,
+          code: 200,
           message: "上架商品成功",
           data: null,
         };
@@ -105,7 +106,7 @@ class GoodsController {
     const res = await findAllGoods(pageNum, pageSize);
     try {
       ctx.body = {
-        code: 0,
+        code: 200,
         message: "获取商品列表成功",
         data: res,
       };
@@ -127,12 +128,23 @@ class GoodsController {
       }
       ctx.body = {
         code: 200,
+        message: "获取分类商品成功",
         data: res
       }
     } catch (error) {
       console.log(error);
       createGoodError.data = error.errors
       ctx.app.emit("error", createGoodError, ctx)
+    }
+  }
+
+  // 查询火热商品
+  async findHotGoodsList(ctx) {
+    const hotGoods = await getHotGoodsList()
+    ctx.body = {
+      code: 200,
+      message: "查询火热商品成功",
+      data: hotGoods
     }
   }
 }

@@ -4,7 +4,8 @@ const {
   register,
   login,
   changePassword,
-  wxLogin
+  wxLogin,
+  changeEncryptedData
 } = require("../controller/user.controller");
 
 const {

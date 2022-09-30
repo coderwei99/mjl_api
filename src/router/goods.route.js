@@ -8,7 +8,8 @@ const {
   remove,
   restore,
   findAll,
-  findCategoryGoods
+  findCategoryGoods,
+  findHotGoodsList
 } = require("../controller/goods.controller");
 
 const { goodsFarmat } = require("../middleware/goods.middleware");
@@ -34,5 +35,8 @@ router.get("/list", findAll);
 
 // 查询某个分类的商品数据
 router.get("/categoryList", findCategoryGoods);
+
+// 查询火热商品列表 用于展示在首页
+router.get("/hotGoodsList", findHotGoodsList)
 
 module.exports = router;

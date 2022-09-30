@@ -14,7 +14,7 @@ class Address {
     const res = await create({ user_id, consignee, phone, address });
     if (res) {
       ctx.body = {
-        code: 0,
+        code: 200,
         message: "添加地址成功",
         result: res,
       };
@@ -27,7 +27,7 @@ class Address {
     const user_id = ctx.state.user.id;
     const { rows, count } = await findAll(user_id);
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "获取列表成功",
       total: count,
       result: rows,
@@ -39,7 +39,7 @@ class Address {
     const res = await updata(ctx.request.body, ctx.request.params.id, user_id);
     if (res) {
       ctx.body = {
-        code: 0,
+        code: 200,
         message: "更新地址成功",
         result: res,
       };
@@ -53,7 +53,7 @@ class Address {
     const user_id = ctx.state.user.id;
     const res = await remove({ address_id, user_id });
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "删除商品成功",
       result: res,
     };
@@ -64,7 +64,7 @@ class Address {
     const user_id = ctx.state.user.id;
     const res = setDeafultAction({ address_id, user_id });
     ctx.body = {
-      code: 0,
+      code: 200,
       message: "设置地址为默认地址成功",
       result: res,
     };

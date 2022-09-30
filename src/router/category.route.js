@@ -2,7 +2,7 @@ const Router = require("koa-router");
 
 const router = new Router({ prefix: "/categorys" });
 
-const { auth } = require("../middleware/auth.middleware");
+const { diffChannelNo } = require("../middleware/auth.middleware");
 const {
   createCategory,
   getCategoryList
@@ -11,11 +11,11 @@ const {
 // 新建分类
 router.post(
   "/",
-  auth,
+  diffChannelNo,
   createCategory
 );
 
 // 获取分类列表
-router.post("/lists", getCategoryList)
+router.post("/lists", diffChannelNo, getCategoryList)
 
 module.exports = router;
