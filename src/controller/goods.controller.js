@@ -143,6 +143,13 @@ class GoodsController {
     const { pageNum = 1, pageSize = 10 } = ctx.request.query
     const hotGoods = await getHotGoodsList(pageNum, pageSize)
     console.log('hotGoods', hotGoods);
+    if (hotGoods.list.length != 0) {
+      hotGoods.list.forEach(item => {
+        item.swiper_image = JSON.parse(item.swiper_image)
+        item.specification = JSON.parse(item.specification)
+      });
+    }
+
     ctx.body = {
       code: 200,
       message: "查询火热商品成功",

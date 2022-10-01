@@ -37,7 +37,7 @@ class OrderController {
     const res = await update(id, status);
     ctx.body = {
       code: 200,
-      message: "更新订单成功",
+      message: "更新订单状态成功",
       data: res,
     };
   }
