@@ -60,14 +60,23 @@ const findAllGoods = async (pageNum, pageSize) => {
 };
 
 
-const getHotGoodsList = async () => {
-  const res = await Goods.findAll({
+// 去数据库查询首页所需要的火热商品
+const getHotGoodsList = async (pageNum, pageSize) => {
+  const offset = (pageNum - 1) * pageSize;
+  const { count, rows } = await Goods.findAndCountAll({
+    limit: pageSize * 1,
+    offset,
     where: {
       is_hot: true
     }
-  })
+  });
+  return {
+    pageNum,
+    pageSize,
+    total: count,
+    list: rows,
+  };
 
-  return res
 }
 
 module.exports = {

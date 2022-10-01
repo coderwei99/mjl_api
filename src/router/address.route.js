@@ -11,28 +11,27 @@ const {
 } = require("../controller/address.controller");
 
 // 导入所需的中间件
-const { auth } = require("../middleware/auth.middleware");
+const { diffChannelNo } = require("../middleware/auth.middleware");
 const { addressFarmat } = require("../middleware/address.middleware");
 
 // 添加地址
 router.post(
   "/",
-  auth,
+  diffChannelNo,
   addressFarmat({
     consignee: "string",
     phone: { type: "string", format: /^1\d{10}$/ },
-    address: "string",
   }),
   createAddress
 );
 
 // 获取地址列表
-router.get("/", auth, findAddressList);
+router.get("/", diffChannelNo, findAddressList);
 
 // 更新地址
 router.put(
   "/:id",
-  auth,
+  diffChannelNo,
   addressFarmat({
     consignee: "string",
     phone: { type: "string", format: /^1\d{10}$/ },
@@ -42,8 +41,8 @@ router.put(
 );
 
 // 删除地址
-router.delete("/:id", auth, removeAddress);
+router.delete("/:id", diffChannelNo, removeAddress);
 
 // 设置地址为默认地址
-router.patch("/:id", auth, setDeaultAddress);
+router.patch("/:id", diffChannelNo, setDeaultAddress);
 module.exports = router;

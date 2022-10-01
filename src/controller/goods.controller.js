@@ -140,7 +140,9 @@ class GoodsController {
 
   // 查询火热商品
   async findHotGoodsList(ctx) {
-    const hotGoods = await getHotGoodsList()
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query
+    const hotGoods = await getHotGoodsList(pageNum, pageSize)
+    console.log('hotGoods', hotGoods);
     ctx.body = {
       code: 200,
       message: "查询火热商品成功",

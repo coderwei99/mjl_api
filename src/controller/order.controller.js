@@ -1,10 +1,11 @@
 const { create, findAll, update } = require("../server/order.server");
 
 class OrderController {
+  // 预下单
   async createOeder(ctx) {
     const user_id = ctx.state.user.id;
     const { address_id, goods_info, total } = ctx.request.body;
-    const order_number = "DW" + Date.now();
+    const order_number = String(Date.now()) + Math.floor(Math.random() * 1000)
     const res = await create({
       user_id,
       address_id,
@@ -15,7 +16,7 @@ class OrderController {
     ctx.body = {
       code: 200,
       message: "创建订单成功",
-      result: res,
+      data: res,
     };
   }
 
@@ -24,9 +25,9 @@ class OrderController {
     const { res, total } = await findAll(user_id);
     ctx.body = {
       code: 200,
-      message: "获取商品列表",
+      message: "获取订单列表",
       total,
-      result: res,
+      data: res,
     };
   }
 
@@ -36,8 +37,8 @@ class OrderController {
     const res = await update(id, status);
     ctx.body = {
       code: 200,
-      message: "更新商品成功",
-      result: res,
+      message: "更新订单成功",
+      data: res,
     };
   }
 }
