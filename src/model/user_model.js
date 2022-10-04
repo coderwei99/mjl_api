@@ -29,7 +29,7 @@ const User = seq.define("meijiali_user", {
     comment: "用户电话号码"
   },
   access_token: {
-    type: DataTypes.STRING(30),
+    type: DataTypes.STRING,
     unique: true,
     comment: "用户access_token"
   },

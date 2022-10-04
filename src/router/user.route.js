@@ -31,4 +31,12 @@ router.patch("/", auth, cryptPassword, changePassword);
 // 小程序用户登录
 router.post("/wxLogin", wxLogin)
 
+
+//测试服务器
+router.get("/test", (ctx, next) => {
+  ctx.body = {
+    code: 200,
+    data: "welcom shopping_api"
+  }
+})
 module.exports = router;

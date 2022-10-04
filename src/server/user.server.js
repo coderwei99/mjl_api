@@ -35,13 +35,12 @@ class UserServer {
   }
 
   // 查询用户 查询到返回用户信息 查询不到就新建
-  async findUserOrCreate({ openid, token }, { nickName, gender, city, province, country, avatarUrl }) {
+  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }) {
     try {
-
       let res = await User.findOne({ where: { open_id: openid } })
       console.log(res, 'res');
       console.log('--------------------------------------------------');
-      console.log({ openid }, nickName, gender, city, province, country, avatarUrl);
+      console.log(accessToken);
       console.log('--------------------------------------------------');
 
       if (!res) {
@@ -56,7 +55,7 @@ class UserServer {
           avatarUrl: avatarUrl,
           uid: '1010' + String(new Date().getTime()).slice(0, 7),
           phone: "",
-          access_token: "",
+          access_token: accessToken,
           token,
         })
       }
