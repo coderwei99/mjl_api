@@ -14,7 +14,12 @@ module.exports = {
   appid: "wx16cc6ea4ece67487",
   secret: "eef6e55557c5fc35927e34ffb2e18e99",
   touser: "oFtGs531zmNeee-FkUjEbrIq6pXM",
-  template_id: "GUglJkRbUUkN_nS3pQ0rVRT4mzd6U5WbsuAs0Eom46k",
+  template_id: "DbY5vaqaZWkoVIMr7tEkAjzqxnNrLT1CCjNJC5Ewk9M",
   url: "",
-  data: {},
+  datas: {
+    shopping_name: {
+      value: '今天没有土味情话了 哈哈！',
+      color: "#FFC0CB"
+    }
+  },
 }
