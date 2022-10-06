@@ -6,7 +6,6 @@ const {
   touser,
   template_id,
   url,
-  datas
 } = require("../../consitant/wxTemplateData");
 
 // 获取模板消息的access_token
@@ -19,14 +18,17 @@ function getAccessToken() {
 // 进行消息推送
 
 
-function postSendTemplate(access_token) {
-
+function postSendTemplate(access_token, data) {
   // 1.
   axios.post(`https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${access_token}`, {
     touser,
     template_id,
     url,
-    data: datas
+    data,
+    // "miniprogram": {
+    //   "appid": "wx65550dc45bb78a1f",
+    //   "pagepath": "index"
+    // },
   })
     .then(res => {
       console.log('res', res)

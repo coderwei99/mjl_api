@@ -15,7 +15,7 @@ module.exports = {
   secret: "eef6e55557c5fc35927e34ffb2e18e99",
   touser: "oFtGs531zmNeee-FkUjEbrIq6pXM",
   template_id: "DbY5vaqaZWkoVIMr7tEkAjzqxnNrLT1CCjNJC5Ewk9M",
-  url: "",
+  url: "www.baidu.com",
   datas: {
     shopping_name: {
       value: '今天没有土味情话了 哈哈！',

@@ -15,7 +15,6 @@ class TripRequest {
       this.instance
         .request(config)
         .then(res => {
-          console.log('config---res', config);
           resolve(res.data);
         })
         .catch(err => {
@@ -27,7 +26,6 @@ class TripRequest {
     return this.request({ ...config, methods: "get" });
   }
   post(config) {
-    console.log(config, 'config');
     return this.request({ ...config, methods: "post" });
   }
 }

@@ -69,7 +69,7 @@ class cartController {
   }
 
   async remove(ctx) {
-    const user_id = ctx.state.user.id;
+    const user_id = ctx.request.body.user_id;
     const goods_id = ctx.request.body.ids;
     const res = await removeCartsGoood({ user_id, goods_id });
 
