@@ -94,6 +94,7 @@ class UserController {
     res.accessToken = accessToken.access_token
     // // 对前端给的用户加密信息进行解密
     const userInfo = await changeEncryptedData(res.session_key, body.encryptedData, body.iv)
+
     console.log(userInfo);
     // 去数据库查询有无这个openid 有着修改  没有就进行修改  我们这里大部分都是小程序调用，后台调用的机会很少  所以大部分都是小程序端进行的登录功能
     const _res = await findUserOrCreate(res, userInfo)

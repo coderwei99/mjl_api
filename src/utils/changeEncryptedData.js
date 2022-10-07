@@ -2,7 +2,7 @@ const WXBizDataCrypt = require('./WXBizDataCrypt')
 
 const { appId } = require("../consitant/wxConfigData")
 async function changeEncryptedData(sesskey, encryptedData, iv) {
-
+	console.log('test-----------------', sesskey, encryptedData, iv);
 	var pc = new WXBizDataCrypt(appId, sesskey)
 
 	var data = pc.decryptData(encryptedData, iv)

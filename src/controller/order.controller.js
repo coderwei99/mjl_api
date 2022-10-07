@@ -4,7 +4,9 @@ class OrderController {
   // 预下单
   async createOeder(ctx) {
     const user_id = ctx.state.user.id;
-    const { address_id, goods_info, total } = ctx.request.body;
+    let { address_id, goods_info, total, status } = ctx.request.body;
+    // 对goods_info 进行序列化
+    goods_info = JSON.stringify(goods_info)
     const order_number = String(Date.now()) + Math.floor(Math.random() * 1000)
     const res = await create({
       user_id,
@@ -12,6 +14,7 @@ class OrderController {
       goods_info,
       total,
       order_number,
+      status
     });
     ctx.body = {
       code: 200,
@@ -21,8 +24,13 @@ class OrderController {
   }
 
   async getOrderList(ctx) {
+    const order_status = ctx.request.query.order_status
     const user_id = ctx.state.user.id;
-    const { res, total } = await findAll(user_id);
+    const { res, total } = await findAll(user_id, order_status);
+    // res.list = JSON.parse(res.list)
+    res.list.forEach(item => {
+      item.goods_info = JSON.parse(item.goods_info)
+    })
     ctx.body = {
       code: 200,
       message: "获取订单列表",

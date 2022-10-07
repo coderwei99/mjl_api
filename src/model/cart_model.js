@@ -24,7 +24,7 @@ const Carts = seq.define("meijiali_cart", {
     allowNull: false,
     comment: "规格的名字"
   },
-  number: {
+  count: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1,

@@ -18,8 +18,11 @@ function getUserPhone(access_token) {
 
 // 根据code 换取用户的openid
 function getWxUserInfo(code) {
+  console.log('-------------------------------------');
+  console.log('-------------------------------------', AppSecret);
+  console.log('-------------------------------------');
   return TripRequest.get({
-    url: `sns/jscode2session?appid=wx19cbe5fb88aa66e1&secret=${AppSecret}&js_code=${code}&grant_type=authorization_code`,
+    url: `sns/jscode2session?appid=${appId}&secret=${AppSecret}&js_code=${code}&grant_type=authorization_code`,
   });
 }
 

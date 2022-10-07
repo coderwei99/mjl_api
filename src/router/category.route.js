@@ -16,6 +16,6 @@ router.post(
 );
 
 // 获取分类列表
-router.post("/lists", diffChannelNo, getCategoryList)
+router.post("/lists", getCategoryList)
 
 module.exports = router;

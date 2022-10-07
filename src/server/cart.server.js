@@ -61,7 +61,7 @@ class cartServer {
       where: {
         user_id,
       },
-      attributes: ["id", "number", "selected", "specification_name"],
+      attributes: ["id", "count", "selected", "specification_name"],
       limit: pageSize * 1,
       offset,
       include: {

@@ -5,7 +5,9 @@ class OrderServer {
     return await Order.create(params);
   }
 
-  async findAll(user_id) {
+  async findAll(user_id, order_status) {
+    let status = order_status !== 'null' && Object.assign({}, { status: order_status })
+    console.log(status, 'stauts-=============================');
     const { count, rows } = await Order.findAndCountAll({
       attributes: [
         "id",
@@ -15,21 +17,23 @@ class OrderServer {
         "total",
         "order_number",
         "status",
+        "createdAt"
       ],
       where: {
         user_id,
+        ...status
       },
     });
     return {
       total: count,
-      res: rows,
+      res: { list: rows },
     };
   }
 
   async update(id, status) {
     // return true;
-    console.log(id, status);
-    return await Order.update({ status }, { where: { id: 1 } });
+    console.log('update', id, status);
+    return await Order.update({ status }, { where: id });
   }
 }
 

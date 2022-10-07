@@ -4,6 +4,7 @@ const {
   updata,
   remove,
   setDeafultAction,
+  findDefaultAddress
 } = require("../server/address.server");
 
 const { updataAddressError } = require("../consitant/error/error.type");
@@ -64,9 +65,17 @@ class Address {
     };
   }
 
+  // 更新地址信息
   async updataAddress(ctx) {
     const user_id = ctx.state.user.id;
-    const res = await updata(ctx.request.body, ctx.request.params.id, user_id);
+    console.log('user_id---------', user_id);
+
+    const address_info = ctx.request.body
+    address_info.district = JSON.stringify(address_info.district)
+    address_info.city = JSON.stringify(address_info.city)
+    address_info.province = JSON.stringify(address_info.province)
+
+    const res = await updata(address_info, ctx.request.params.id, user_id);
     if (res) {
       ctx.body = {
         code: 200,
@@ -107,6 +116,18 @@ class Address {
       message: "设置地址为默认地址成功",
       data: res,
     };
+  }
+
+  async getDefaultAddress(ctx) {
+    const user_id = ctx.state.user.id;
+    const res = await findDefaultAddress(user_id)
+    res.dataValues.district = JSON.parse(res.dataValues.district)
+    res.dataValues.city = JSON.parse(res.dataValues.city)
+    res.dataValues.province = JSON.parse(res.dataValues.province)
+    ctx.body = {
+      code: 200,
+      data: res
+    }
   }
 }
 

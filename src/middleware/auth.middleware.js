@@ -60,7 +60,9 @@ const authWxLogin = async (ctx, next) => {
   console.log(token, '2');
   try {
     const res = jwt.verify(token, JWT_SECRET);
-    ctx.state.user = res;
+    // const {} = ctx.header
+    console.log(ctx.header, 'header----------------------------------------------------------------------------------------------');
+    ctx.state.user = { id: ctx.header.user_id };
   } catch (err) {
     switch (err.name) {
       case "TokenExpiredError":
@@ -83,6 +85,7 @@ const diffChannelNo = async (ctx, next) => {
     if (authWxLogin(ctx, next)) {
       await next()
     }
+    return
   } else if (appid === 'cms') {
     // 后台管理系统
     if (auth(ctx, next)) {

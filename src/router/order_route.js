@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 
-const { auth } = require("../middleware/auth.middleware");
+const { diffChannelNo } = require("../middleware/auth.middleware");
 const {
   createOeder,
   getOrderList,
@@ -13,18 +13,15 @@ const router = new Router({ prefix: "/orders" });
 // 创建订单
 router.post(
   "/",
-  auth,
-  ordersFarmat({
-    address_id: "int",
-    goods_info: "string",
-    total: "string",
-  }),
+  diffChannelNo,
   createOeder
 );
 
 // 查询订单
-router.get("/", auth, getOrderList);
+router.get("/", diffChannelNo, getOrderList);
 
 // 更新订单：这里我们主要是更新订单的状态
-router.patch("/:id", auth, updataOrder);
+router.put("/:id", diffChannelNo, updataOrder);
+
+
 module.exports = router;

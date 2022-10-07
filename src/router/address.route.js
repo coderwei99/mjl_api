@@ -8,6 +8,7 @@ const {
   updataAddress,
   removeAddress,
   setDeaultAddress,
+  getDefaultAddress
 } = require("../controller/address.controller");
 
 // 导入所需的中间件
@@ -32,11 +33,6 @@ router.get("/", diffChannelNo, findAddressList);
 router.put(
   "/:id",
   diffChannelNo,
-  addressFarmat({
-    consignee: "string",
-    phone: { type: "string", format: /^1\d{10}$/ },
-    address: "string",
-  }),
   updataAddress
 );
 
@@ -45,4 +41,8 @@ router.delete("/:id", diffChannelNo, removeAddress);
 
 // 设置地址为默认地址
 router.patch("/:id", diffChannelNo, setDeaultAddress);
+
+// 获取默认地址
+router.get("/defaultAddress", diffChannelNo, getDefaultAddress)
+
 module.exports = router;

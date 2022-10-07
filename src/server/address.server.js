@@ -100,6 +100,16 @@ class AddressServer {
       }
     );
   }
+
+  async findDefaultAddress(user_id) {
+    const res = await Address.findOne({
+      where: {
+        user_id,
+        is_default: true
+      }
+    })
+    return res
+  }
 }
 
 module.exports = new AddressServer();
