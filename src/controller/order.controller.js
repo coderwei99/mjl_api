@@ -25,17 +25,18 @@ class OrderController {
 
   async getOrderList(ctx) {
     const order_status = ctx.request.query.order_status
+    const { pageSize = 10, pageNum = 1 } = ctx.request.query
+
     const user_id = ctx.state.user.id;
-    const { res, total } = await findAll(user_id, order_status);
+    const result = await findAll(user_id, order_status, pageSize, pageNum);
     // res.list = JSON.parse(res.list)
-    res.list.forEach(item => {
+    result.list.forEach(item => {
       item.goods_info = JSON.parse(item.goods_info)
     })
     ctx.body = {
       code: 200,
       message: "获取订单列表",
-      total,
-      data: res,
+      data: result,
     };
   }
 

@@ -5,10 +5,16 @@ class OrderServer {
     return await Order.create(params);
   }
 
-  async findAll(user_id, order_status) {
+  async findAll(user_id, order_status, pageSize, pageNum) {
+
+
+
+
     let status = order_status !== 'null' && Object.assign({}, { status: order_status })
-    console.log(status, 'stauts-=============================');
+    const offset = (pageNum - 1) * pageSize;
     const { count, rows } = await Order.findAndCountAll({
+      limit: pageSize * 1,
+      offset,
       attributes: [
         "id",
         "user_id",
@@ -26,7 +32,9 @@ class OrderServer {
     });
     return {
       total: count,
-      res: { list: rows },
+      list: rows,
+      pageNum,
+      pageSize,
     };
   }
 
