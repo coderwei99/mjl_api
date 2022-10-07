@@ -4,7 +4,7 @@ class OrderController {
   // 预下单
   async createOeder(ctx) {
     const user_id = ctx.state.user.id;
-    let { address_id, goods_info, total, status } = ctx.request.body;
+    let { address_id, goods_info, total, status, order_omment } = ctx.request.body;
     // 对goods_info 进行序列化
     goods_info = JSON.stringify(goods_info)
     const order_number = String(Date.now()) + Math.floor(Math.random() * 1000)
@@ -14,7 +14,8 @@ class OrderController {
       goods_info,
       total,
       order_number,
-      status
+      status,
+      order_omment
     });
     ctx.body = {
       code: 200,

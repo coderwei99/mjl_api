@@ -5,6 +5,7 @@ async function changeEncryptedData(sesskey, encryptedData, iv) {
 	console.log('test-----------------', sesskey, encryptedData, iv);
 	var pc = new WXBizDataCrypt(appId, sesskey)
 
+	console.log('daozheli==========================================');
 	var data = pc.decryptData(encryptedData, iv)
 
 	// console.log('解密后 data: ', data)

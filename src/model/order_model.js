@@ -34,6 +34,11 @@ const Orders = seq.define("meijiali_orders", {
     defaultValue: 0,
     comment: "订单状态", // 默认值为0， 0===>未支付  1===>已支付  2 ===>已发货  3 ===> 已签收   4 ===>取消
   },
+  order_omment: {
+    type: DataTypes.STRING(1500),
+    defaultValue: '',
+    comment: "订单备注",
+  },
 });
 
 // Orders.sync({ force: true });

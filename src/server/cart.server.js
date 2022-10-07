@@ -40,14 +40,14 @@ class cartServer {
     if (!res) {
       // 如果为查询到数据，就新增一条记录到购物车
       console.log('specification----------------', specification, name);
-      const reslut = await Cart.create({ goods_id, user_id, specification, specification_name: name, number: count });
+      const reslut = await Cart.create({ goods_id, user_id, specification, specification_name: name, count: count });
       return reslut;
     } else {
       // 1. 如果查询到数据，考虑两种情况，
       //   - 如果是规格一样的话 更新cart的number数量 ===> 数据库的number数量+specification.count ----> 注意这里返回的是修改后的数据
       //   - 如果规格不一样  就说明新增一条数据到数据库  不同规格代表不同的商品
       // 规格一样的情况下 数据库的number数量+specification.count
-      const reslut = await res.increment("number", { by: count });
+      const reslut = await res.increment("count", { by: count });
       // 这里需要调用.reload()方法，因为increment返回的是更新前的数量，我们需要返回递增后的数据
       return await reslut.reload();
 
