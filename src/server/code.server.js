@@ -16,6 +16,11 @@ class CodeServer {
   }
 
   // 使用邀请码 如果有用户用过了就让这个邀请码失效
+  async discardCode(code) {
+    const res = await Code.update({ is_valid: false }, { where: { code } })
+    console.log(res, 'find code res');
+    return res
+  }
 }
 
 module.exports = new CodeServer();

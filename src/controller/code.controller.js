@@ -27,7 +27,7 @@ class CodeController {
     const code = ctx.request.query.code
     const res = await verification(code)
     console.log(code);
-    if (!res) return ctx.app.emit('error', verifyCodeError, ctx)
+    if (!res || !res.is_valid) return ctx.app.emit('error', verifyCodeError, ctx)
     ctx.body = {
       code: 200,
       data: res,

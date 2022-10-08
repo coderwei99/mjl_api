@@ -64,6 +64,11 @@ const Goods = seq.define(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
       comment: "是否有优惠"
+    },
+    retail_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      comment: "零售价格",
     }
   },
   {

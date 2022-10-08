@@ -1,5 +1,6 @@
 const User = require("../model/user_model");
 
+const { discardCode } = require("./code.server")
 class UserServer {
   // 创建一条用户数据
   async createUser(user_name, password) {
@@ -35,15 +36,20 @@ class UserServer {
   }
 
   // 查询用户 查询到返回用户信息 查询不到就新建
-  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }) {
+  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }, invitation_code) {
     try {
       let res = await User.findOne({ where: { open_id: openid } })
-      console.log(res, 'res');
-      console.log('--------------------------------------------------');
-      console.log(accessToken);
-      console.log('--------------------------------------------------');
 
+      // 如果有invitation_code 就说明用户是发廊用户 invitation_code是否正确在用户输入的时候就判断了 所以这里只有两种可能 一种是空字符串 另一种是正确的邀请码
+      let is_vip = false
+      if (invitation_code) {
+        is_vip = true
+      }
       if (!res) {
+        // 如果用户用了邀请码 这里需要废弃这个code
+        if (is_vip) {
+          await discardCode(invitation_code)
+        }
         // 新用户 缓存数据到数据库
         res = await User.create({
           user_name: nickName,
@@ -57,6 +63,7 @@ class UserServer {
           phone: "",
           access_token: accessToken,
           token,
+          is_vip
         })
       }
       return res.dataValues

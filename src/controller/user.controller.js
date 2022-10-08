@@ -97,7 +97,7 @@ class UserController {
 
     console.log(userInfo);
     // 去数据库查询有无这个openid 有着修改  没有就进行修改  我们这里大部分都是小程序调用，后台调用的机会很少  所以大部分都是小程序端进行的登录功能
-    const _res = await findUserOrCreate(res, userInfo)
+    const _res = await findUserOrCreate(res, userInfo, body.invitation_code)
 
 
 

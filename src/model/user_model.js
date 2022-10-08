@@ -64,6 +64,11 @@ const User = seq.define("meijiali_user", {
     defaultValue: '',
     comment: "用户头像"
   },
+  is_vip: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    comment: "是否是发廊，注册的时候输入邀请码就是商店，私人是没有邀请码的"
+  }
 });
 
 // User.sync({ force: true });
