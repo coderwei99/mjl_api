@@ -36,6 +36,11 @@ const Carts = seq.define("meijiali_cart", {
     defaultValue: true,
     comment: "是否选中",
   },
+  unit_price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    comment: "商品单价",
+  }
 });
 
 // Carts.sync({ force: true });

@@ -5,7 +5,7 @@ const Goods = require("../model/goods_model");
 const Cart = require("../model/cart_model");
 
 class cartServer {
-  async createOrUpdate({ user_id, goods_id, specification, count, name }) {
+  async createOrUpdate({ user_id, goods_id, specification, count, name, unit_price }) {
     //-----------------------------start-----------------------------------------
     // 这个位置的两个判断条件可以考虑抽离成一个中间件，尽量保证createOrUpdate方法的职责单一
 
@@ -38,9 +38,9 @@ class cartServer {
       },
     });
     if (!res) {
-      // 如果为查询到数据，就新增一条记录到购物车
+      // 如果未查询到数据，就新增一条记录到购物车
       console.log('specification----------------', specification, name);
-      const reslut = await Cart.create({ goods_id, user_id, specification, specification_name: name, count: count });
+      const reslut = await Cart.create({ goods_id, user_id, specification, specification_name: name, count, unit_price });
       return reslut;
     } else {
       // 1. 如果查询到数据，考虑两种情况，
@@ -61,7 +61,7 @@ class cartServer {
       where: {
         user_id,
       },
-      attributes: ["id", "count", "selected", "specification_name"],
+      attributes: ["id", "count", "selected", "specification_name", "unit_price"],
       limit: pageSize * 1,
       offset,
       include: {
