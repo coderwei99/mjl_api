@@ -4,7 +4,8 @@ const router = new Router({ prefix: "/codes" });
 
 const {
   createCode,
-  verificationCode
+  verificationCode,
+  getCodeList
 } = require("../controller/code.controller");
 
 // 新建code
@@ -19,5 +20,7 @@ router.get(
   verificationCode
 );
 
+// 获取邀请码列表
+router.get("/list", getCodeList)
 
 module.exports = router;

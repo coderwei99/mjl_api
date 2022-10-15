@@ -68,7 +68,12 @@ const User = seq.define("meijiali_user", {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     comment: "是否是发廊，注册的时候输入邀请码就是商店，私人是没有邀请码的"
-  }
+  },
+  appId: {
+    type: DataTypes.STRING(10),
+    allowNull: false,
+    comment: "用户渠道号"
+  },
 });
 
 // User.sync({ force: true });
