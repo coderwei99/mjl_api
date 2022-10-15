@@ -28,9 +28,9 @@ class UserController {
     const { appid } = ctx.request.header
     if (!appid) return ctx.app.emit("error", appidError, ctx)
 
-    const { user_name, password } = ctx.request.body;
+    const { user_name, password, is_admin } = ctx.request.body;
     try {
-      const res = await createUser(user_name, password, appid);
+      const res = await createUser(user_name, password, appid, is_admin);
       console.log(res);
       ctx.body = {
         code: 200,

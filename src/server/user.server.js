@@ -3,8 +3,8 @@ const User = require("../model/user_model");
 const { discardCode } = require("./code.server")
 class UserServer {
   // 创建一条用户数据
-  async createUser(user_name, password, appId) {
-    const res = await User.create({ user_name, password, appId });
+  async createUser(user_name, password, appId, is_admin) {
+    const res = await User.create({ user_name, password, appId, is_admin });
     return res.dataValues;
   }
 
