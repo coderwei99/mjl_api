@@ -6,10 +6,12 @@ const {
   updataById,
   findUserOrCreate
 } = require("../server/user.server");
+
 const {
   userRegisterError,
   modifyPasswordfail,
 } = require("../consitant/error/error.type");
+const { appidError } = require("../consitant/error/user.erorType")
 
 const { JWT_SECRET } = require("../config/config.default");
 
@@ -20,16 +22,20 @@ const { toCryptOpenid } = require("../middleware/user.middleware")
 
 // 导入对用户个人信息解密函数
 const { changeEncryptedData } = require("../utils/changeEncryptedData")
+
 class UserController {
   async register(ctx, next) {
+    const { appid } = ctx.request.header
+    if (!appid) return ctx.app.emit("error", appidError, ctx)
+
     const { user_name, password } = ctx.request.body;
     try {
-      const res = await createUser(user_name, password);
+      const res = await createUser(user_name, password, appid);
       console.log(res);
       ctx.body = {
         code: 200,
         message: "用户注册成功",
-        result: {
+        data: {
           user_name: res.user_name,
         },
       };
@@ -47,7 +53,7 @@ class UserController {
       ctx.body = {
         code: 200,
         message: "用户登录成功",
-        result: {
+        data: {
           token: jwt.sign(res, JWT_SECRET, { expiresIn: "1d" }),
         },
       };
@@ -69,7 +75,7 @@ class UserController {
         ctx.body = {
           code: 200,
           message: "修改密码成功",
-          result: null,
+          data: null,
         };
       } else {
         // console.log("不正常情况");
@@ -84,6 +90,9 @@ class UserController {
 
   async wxLogin(ctx, next) {
     const body = ctx.request.body
+    // 拿到用户的appid  标志用户是哪个渠道过来的
+    const { appid } = ctx.request.header
+    if (!appid) return ctx.app.emit("error", appidError, ctx)
     const accessToken = await getAccessToken()
 
     console.log(accessToken.access_token);
@@ -97,7 +106,7 @@ class UserController {
 
     console.log(userInfo);
     // 去数据库查询有无这个openid 有着修改  没有就进行修改  我们这里大部分都是小程序调用，后台调用的机会很少  所以大部分都是小程序端进行的登录功能
-    const _res = await findUserOrCreate(res, userInfo, body.invitation_code)
+    const _res = await findUserOrCreate(res, userInfo, body.invitation_code, appid)
 
 
 

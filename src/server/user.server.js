@@ -3,23 +3,25 @@ const User = require("../model/user_model");
 const { discardCode } = require("./code.server")
 class UserServer {
   // 创建一条用户数据
-  async createUser(user_name, password) {
-    const res = await User.create({ user_name, password });
+  async createUser(user_name, password, appId) {
+    const res = await User.create({ user_name, password, appId });
     return res.dataValues;
   }
 
   // 查找用户
   async getUserInfo({ id, user_name, password, is_anmin }) {
+    console.log('----------------------------------------', { id, user_name, password, is_anmin });
     const whereOpt = {};
     id && Object.assign(whereOpt, { id });
     user_name && Object.assign(whereOpt, { user_name });
     password && Object.assign(whereOpt, { password });
     is_anmin && Object.assign(whereOpt, { is_anmin });
-    console.log(whereOpt);
+    console.log(User);
     const res = await User.findOne({
       // attributes: ["id", "password", "is_admin", "user_name"],
       where: whereOpt,
     });
+    console.log(res, '---------------------');
     return res ? res.dataValues : null;
   }
 
@@ -36,7 +38,7 @@ class UserServer {
   }
 
   // 查询用户 查询到返回用户信息 查询不到就新建
-  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }, invitation_code) {
+  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }, invitation_code, appId) {
     try {
       let res = await User.findOne({ where: { open_id: openid } })
 
@@ -63,7 +65,8 @@ class UserServer {
           phone: "",
           access_token: accessToken,
           token,
-          is_vip
+          is_vip,
+          appId
         })
       }
       return res.dataValues
