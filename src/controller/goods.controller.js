@@ -104,6 +104,11 @@ class GoodsController {
     const { pageNum = 1, pageSize = 10 } = ctx.request.query;
 
     const res = await findAllGoods(pageNum, pageSize);
+    console.log(res, 'res-------------');
+    res.list.forEach(item => {
+      item.specification = JSON.parse(item.specification)
+      item.swiper_image = JSON.parse(item.swiper_image)
+    })
     try {
       ctx.body = {
         code: 200,

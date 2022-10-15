@@ -50,6 +50,7 @@ const findAllGoods = async (pageNum, pageSize) => {
   const { count, rows } = await Goods.findAndCountAll({
     limit: pageSize * 1,
     offset,
+    raw: true,
   });
   return {
     pageNum,
