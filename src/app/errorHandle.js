@@ -1,6 +1,4 @@
 module.exports = (err, ctx) => {
-  console.log("on");
-  console.log("err", err);
   let status = 500;
   switch (err.code) {
     case "10001":
