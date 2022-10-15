@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 
-const { auth, hadAdminPermission } = require("../middleware/auth.middleware");
+const { diffChannelNo, hadAdminPermission } = require("../middleware/auth.middleware");
 const {
   upLoad,
   create,
@@ -16,19 +16,19 @@ const { goodsFarmat } = require("../middleware/goods.middleware");
 
 const router = new Router({ prefix: "/goods" });
 // 商品图片上传： auth --->登录    hadAdminPermission ---> 是否拥有权限
-router.post("/upload", auth, hadAdminPermission, upLoad);
+router.post("/upload", diffChannelNo, hadAdminPermission, upLoad);
 
 // 发布商品
 router.post("/", goodsFarmat, create);
 
 // 更新商品
-router.put("/:id", auth, hadAdminPermission, goodsFarmat, updata);
+router.put("/:id", diffChannelNo, hadAdminPermission, goodsFarmat, updata);
 
 // 下架商品
-router.post("/:id/off", auth, hadAdminPermission, remove);
+router.post("/:id/off", diffChannelNo, hadAdminPermission, remove);
 
 // 上架商品
-router.post("/:id/on", auth, hadAdminPermission, restore);
+router.post("/:id/on", diffChannelNo, hadAdminPermission, restore);
 
 // 查询所有商品数据
 router.get("/list", findAll);

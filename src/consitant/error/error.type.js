@@ -44,6 +44,11 @@ module.exports = {
     message: "无效的token",
     data: null,
   },
+  TokenAllowNullError: {
+    code: "10102",
+    message: "token不能为空",
+    data: null,
+  },
   upLoadImageError: {
     code: "10201",
     message: "上传图片失败",

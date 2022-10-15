@@ -54,6 +54,7 @@ class GoodsController {
   }
   async updata(ctx) {
     try {
+      console.log(11111);
       const res = await updataGoods(ctx.params.id, ctx.request.body);
       if (res) {
         ctx.body = {
@@ -108,6 +109,7 @@ class GoodsController {
     res.list.forEach(item => {
       item.specification = JSON.parse(item.specification)
       item.swiper_image = JSON.parse(item.swiper_image)
+      item.is_hot = !!item.is_hot
     })
     try {
       ctx.body = {

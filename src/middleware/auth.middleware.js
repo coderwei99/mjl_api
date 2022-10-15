@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const {
   TokenExpiredError,
   JsonWebTokenError,
+  TokenAllowNullError
 } = require("../consitant/error/error.type");
 
 const {
@@ -19,22 +20,21 @@ const auth = async (ctx, next) => {
   console.log(token, '2');
   try {
     const res = jwt.verify(token, JWT_SECRET);
+    console.log(res, 'res');
     ctx.state.user = res;
+
   } catch (err) {
-    switch (err.name) {
-      case "TokenExpiredError":
-        return ctx.app.emit("error", TokenExpiredError, ctx);
-      case "JsonWebTokenError":
-        return ctx.app.emit("error", JsonWebTokenError, ctx);
-    }
+    console.log('err', err.name);
+    return { type: 'err', error: err }
   }
 
   // await next();
-  return true
+  return { type: 'success' }
 };
 
 // 验证用户是否为管理员
 const hadAdminPermission = async (ctx, next) => {
+  console.log(ctx.state, '---------------');
   const { is_admin } = ctx.state.user;
   try {
     // console.log(ctx.state.user);
@@ -64,16 +64,11 @@ const authWxLogin = async (ctx, next) => {
     console.log(ctx.header, 'header----------------------------------------------------------------------------------------------');
     ctx.state.user = { id: ctx.header.user_id };
   } catch (err) {
-    switch (err.name) {
-      case "TokenExpiredError":
-        return ctx.app.emit("error", TokenExpiredError, ctx);
-      case "JsonWebTokenError":
-        return ctx.app.emit("error", JsonWebTokenError, ctx);
-    }
+    return { type: 'err', error: err }
   }
 
   // await next();
-  return true
+  return { type: 'success' }
 };
 
 
@@ -82,14 +77,36 @@ const diffChannelNo = async (ctx, next) => {
   console.log('appid', appid);
   if (appid === 'wx-mini') {
     // 小程序渠道
-    if (authWxLogin(ctx, next)) {
+    const result = await authWxLogin(ctx, next)
+    if (result.type !== 'err') {
       await next()
+    } else {
+      switch (result.error.name) {
+        case "TokenExpiredError":
+          return ctx.app.emit("error", TokenExpiredError, ctx);
+        case "JsonWebTokenError":
+          return ctx.app.emit("error", JsonWebTokenError, ctx);
+        default:
+          return ctx.app.emit("error", TokenAllowNullError, ctx);
+      }
     }
     return
   } else if (appid === 'cms') {
     // 后台管理系统
-    if (auth(ctx, next)) {
+    console.log(await auth(ctx, next));
+    const result = await auth(ctx, next)
+    if (result.type !== 'err') {
       await next()
+    } else {
+      // 判断token是那种异常
+      switch (result.error.name) {
+        case "TokenExpiredError":
+          return ctx.app.emit("error", TokenExpiredError, ctx);
+        case "JsonWebTokenError":
+          return ctx.app.emit("error", JsonWebTokenError, ctx);
+        default:
+          return ctx.app.emit("error", TokenAllowNullError, ctx);
+      }
     }
   } else {
     // 不允许走到这里  必须根据前端传过来的appid  对token进行鉴权
