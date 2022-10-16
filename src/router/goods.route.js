@@ -22,7 +22,7 @@ router.post("/upload", diffChannelNo, hadAdminPermission, upLoad);
 router.post("/", goodsFarmat, create);
 
 // 更新商品
-router.put("/:id", diffChannelNo, hadAdminPermission, goodsFarmat, updata);
+router.patch("/:id", diffChannelNo, hadAdminPermission, goodsFarmat, updata);
 
 // 下架商品
 router.post("/:id/off", diffChannelNo, hadAdminPermission, remove);

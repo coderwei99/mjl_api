@@ -9,6 +9,8 @@ const createGoods = async (goods) => {
 };
 
 const updataGoods = async (id, goodsInfo) => {
+  goodsInfo.specification = JSON.stringify(goodsInfo.specification)
+  goodsInfo.swiper_image = JSON.stringify(goodsInfo.swiper_image)
   const res = await Goods.update(goodsInfo, { where: { id } });
   return res[0] > 0 ? true : false;
 };

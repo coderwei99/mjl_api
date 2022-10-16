@@ -54,7 +54,6 @@ class GoodsController {
   }
   async updata(ctx) {
     try {
-      console.log(11111);
       const res = await updataGoods(ctx.params.id, ctx.request.body);
       if (res) {
         ctx.body = {
