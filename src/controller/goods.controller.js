@@ -15,7 +15,7 @@ const {
   restoreGood,
   findAllGoods,
   findCategoryGoodsList,
-  getHotGoodsList
+  getHotGoodsList,
 } = require("../server/goods.server");
 class GoodsController {
   async upLoad(ctx, next) {
@@ -101,9 +101,9 @@ class GoodsController {
     }
   }
   async findAll(ctx) {
-    const { pageNum = 1, pageSize = 10 } = ctx.request.query;
+    const { pageNum = 1, pageSize = 10, ...params } = ctx.request.body;
 
-    const res = await findAllGoods(pageNum, pageSize);
+    const res = await findAllGoods(pageNum, pageSize, params);
     console.log(res, 'res-------------');
     res.list.forEach(item => {
       item.specification = JSON.parse(item.specification)

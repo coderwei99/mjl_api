@@ -18,7 +18,7 @@ class CateGoryController {
       ctx.body = {
         code: 200,
         data: res,
-        mes: "新增分类成功"
+        message: "新增分类成功"
       }
     } catch (error) {
       console.log(error, 'error');
@@ -31,7 +31,8 @@ class CateGoryController {
     const res = await getList()
     ctx.body = {
       code: 200,
-      data: res
+      data: res,
+      message: "获取分类列表成功"
     }
   }
 }

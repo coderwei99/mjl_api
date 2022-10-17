@@ -9,7 +9,7 @@ const {
   restore,
   findAll,
   findCategoryGoods,
-  findHotGoodsList
+  findHotGoodsList,
 } = require("../controller/goods.controller");
 
 const { goodsFarmat } = require("../middleware/goods.middleware");
@@ -30,8 +30,8 @@ router.post("/:id/off", diffChannelNo, hadAdminPermission, remove);
 // 上架商品
 router.post("/:id/on", diffChannelNo, hadAdminPermission, restore);
 
-// 查询所有商品数据
-router.get("/list", findAll);
+// 查询所有商品数据 模糊查询
+router.post("/list", findAll);
 
 // 查询某个分类的商品数据
 router.get("/categoryList", findCategoryGoods);

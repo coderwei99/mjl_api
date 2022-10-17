@@ -1,40 +1,44 @@
 const Goods = require("../model/goods_model");
 
-const createGoods = async (goods) => {
-  goods.specification = JSON.stringify(goods.specification)
-  goods.swiper_image = JSON.stringify(goods.swiper_image)
-  console.log('swiper', goods.swiper_image);
+const { handleLike } = require("../utils/handleLike");
+const createGoods = async goods => {
+  goods.specification = JSON.stringify(goods.specification);
+  goods.swiper_image = JSON.stringify(goods.swiper_image);
+  console.log("swiper", goods.swiper_image);
   const res = await Goods.create(goods);
   return res;
 };
 
 const updataGoods = async (id, goodsInfo) => {
-  goodsInfo.specification = JSON.stringify(goodsInfo.specification)
-  goodsInfo.swiper_image = JSON.stringify(goodsInfo.swiper_image)
+  goodsInfo.specification = JSON.stringify(goodsInfo.specification);
+  goodsInfo.swiper_image = JSON.stringify(goodsInfo.swiper_image);
   const res = await Goods.update(goodsInfo, { where: { id } });
   return res[0] > 0 ? true : false;
 };
 
-const removeGood = async (id) => {
+const removeGood = async id => {
   const res = await Goods.destroy({ where: { id } });
   return res > 0 ? true : false;
 };
 
-const restoreGood = async (id) => {
+const restoreGood = async id => {
   const res = await Goods.restore({ where: { id } });
   return res > 0 ? true : false;
 };
 
-
 // 返回某个分类的商品
-const findCategoryGoodsList = async ({ parentId: parent_id, pageNum = 1, pageSize = 10 }) => {
+const findCategoryGoodsList = async ({
+  parentId: parent_id,
+  pageNum = 1,
+  pageSize = 10,
+}) => {
   const offset = (pageNum - 1) * pageSize;
   const { count, rows } = await Goods.findAndCountAll({
     limit: pageSize * 1,
     offset,
     where: {
       parent_id,
-    }
+    },
   });
   return {
     pageNum,
@@ -44,15 +48,37 @@ const findCategoryGoodsList = async ({ parentId: parent_id, pageNum = 1, pageSiz
   };
 };
 
-
-
 // 返回所有商品列表
-const findAllGoods = async (pageNum, pageSize) => {
+const findAllGoods = async (pageNum, pageSize, params) => {
+  const {
+    goods_name,
+    // goods_price,
+    // goods_num,
+    // swiper_image,
+    // min_count_elivery,
+    is_hot,
+    parent_id,
+    // original_price,
+    // is_benefit,
+    // sales,
+    // goods_img,
+    // retail_price,
+    // specification,
+  } = params;
+  let where = {};
+  goods_name && Object.assign(where, { goods_name });
+  is_hot && Object.assign(where, { is_hot });
+  parent_id && Object.assign(where, { parent_id });
+  where = handleLike(where);
+
+  console.log(where, "----");
+
   const offset = (pageNum - 1) * pageSize;
   const { count, rows } = await Goods.findAndCountAll({
     limit: pageSize * 1,
     offset,
     raw: true,
+    where,
   });
   return {
     pageNum,
@@ -61,7 +87,6 @@ const findAllGoods = async (pageNum, pageSize) => {
     list: rows,
   };
 };
-
 
 // 去数据库查询首页所需要的火热商品
 const getHotGoodsList = async (pageNum, pageSize) => {
@@ -70,8 +95,8 @@ const getHotGoodsList = async (pageNum, pageSize) => {
     limit: pageSize * 1,
     offset,
     where: {
-      is_hot: true
-    }
+      is_hot: true,
+    },
   });
   return {
     pageNum,
@@ -79,8 +104,13 @@ const getHotGoodsList = async (pageNum, pageSize) => {
     total: count,
     list: rows,
   };
+};
 
-}
+// 模糊查询
+const findLikeGoodsList = async params => {
+  console.log(params);
+  const res = await Goods.findAndCountAll({});
+};
 
 module.exports = {
   createGoods,
@@ -89,5 +119,6 @@ module.exports = {
   restoreGood,
   findAllGoods,
   findCategoryGoodsList,
-  getHotGoodsList
+  getHotGoodsList,
+  findLikeGoodsList,
 };
