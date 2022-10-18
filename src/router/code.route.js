@@ -16,6 +16,6 @@ router.post("/", diffChannelNo, createCode);
 router.get("/", verificationCode);
 
 // 获取邀请码列表
-router.get("/list", diffChannelNo, getCodeList);
+router.post("/list", diffChannelNo, getCodeList);
 
 module.exports = router;

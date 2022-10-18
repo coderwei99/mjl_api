@@ -1,6 +1,6 @@
 const { Op } = require("sequelize");
 function handleLike(obj) {
-  const { createdAt, updatedAt, is_hot, parent_id, ...info } = obj;
+  const { createdAt, updatedAt, is_hot, parent_id, is_used, ...info } = obj;
   let keys = Reflect.ownKeys(info);
   let where = {};
   keys.forEach(item => {
@@ -13,6 +13,9 @@ function handleLike(obj) {
   }
   if (parent_id) {
     where["parent_id"] = parent_id;
+  }
+  if (is_used) {
+    where["is_used"] = is_used;
   }
   if (createdAt) {
     where["createdAt"] = {
