@@ -6,11 +6,8 @@ class OrderServer {
   }
 
   async findAll(user_id, order_status, pageSize, pageNum) {
-
-
-
-
-    let status = order_status !== 'null' && Object.assign({}, { status: order_status })
+    let status =
+      order_status !== "null" && Object.assign({}, { status: order_status });
     const offset = (pageNum - 1) * pageSize;
     const { count, rows } = await Order.findAndCountAll({
       limit: pageSize * 1,
@@ -23,11 +20,11 @@ class OrderServer {
         "total",
         "order_number",
         "status",
-        "createdAt"
+        "createdAt",
       ],
       where: {
         user_id,
-        ...status
+        ...status,
       },
     });
     return {
@@ -40,8 +37,26 @@ class OrderServer {
 
   async update(id, status) {
     // return true;
-    console.log('update', id, status);
+    console.log("update", id, status);
     return await Order.update({ status }, { where: id });
+  }
+
+  // 获取所有用户订单列表
+  async findAllOrderList(params) {
+    const { pageSize = 10, pageNum = 1, ...arg } = params;
+    // 模糊查询
+    const offset = (pageNum - 1) * pageSize;
+    const { count, rows } = await Order.findAndCountAll({
+      limit: pageSize * 1,
+      offset,
+      raw: true,
+    });
+    return {
+      total: count,
+      list: rows,
+      pageNum,
+      pageSize,
+    };
   }
 }
 
