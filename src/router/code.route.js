@@ -1,26 +1,21 @@
 const Router = require("koa-router");
 
 const router = new Router({ prefix: "/codes" });
+const { diffChannelNo } = require("../middleware/auth.middleware");
 
 const {
   createCode,
   verificationCode,
-  getCodeList
+  getCodeList,
 } = require("../controller/code.controller");
 
 // 新建code
-router.post(
-  "/",
-  createCode
-);
+router.post("/", diffChannelNo, createCode);
 
 // 查看code是否存在数据库
-router.get(
-  "/",
-  verificationCode
-);
+router.get("/", verificationCode);
 
 // 获取邀请码列表
-router.get("/list", getCodeList)
+router.get("/list", diffChannelNo, getCodeList);
 
 module.exports = router;

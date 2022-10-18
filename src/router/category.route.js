@@ -13,8 +13,8 @@ const {
 router.post("/", diffChannelNo, createCategory);
 
 // 获取分类列表
-router.post("/lists", getCategoryList);
+router.post("/lists", diffChannelNo, getCategoryList);
 
 // 删除分类
-router.delete("/:id", removeCategory);
+router.delete("/:id", diffChannelNo, removeCategory);
 module.exports = router;
