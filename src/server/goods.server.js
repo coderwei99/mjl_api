@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Goods = require("../model/goods_model");
 
 const { handleLike } = require("../utils/handleLike");
@@ -67,12 +68,10 @@ const findAllGoods = async (pageNum, pageSize, params) => {
   } = params;
   let where = {};
   goods_name && Object.assign(where, { goods_name });
-  is_hot && Object.assign(where, { is_hot });
+  is_hot !== undefined && Object.assign(where, { is_hot }); //is_hot本来就是布尔值  所以不能直接判断真假  需要判断是否为undefined 来确定前端有没有传递这个参数
   parent_id && Object.assign(where, { parent_id });
   where = handleLike(where);
-
   console.log(where, "----");
-
   const offset = (pageNum - 1) * pageSize;
   const { count, rows } = await Goods.findAndCountAll({
     limit: pageSize * 1,
