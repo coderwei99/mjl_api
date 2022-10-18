@@ -11,7 +11,8 @@ class CategoryServer {
   // 获取分类列表
   async getList() {
     const result = await Category.findAll({
-      attributes: ["id", "parent_id", ["category_name", "name"]],
+      attributes: ["id", "parent_id", ["category_name", "label"]],
+      raw: true,
     });
     return result;
   }

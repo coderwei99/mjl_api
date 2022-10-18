@@ -31,6 +31,7 @@ class CateGoryController {
 
   async getCategoryList(ctx, next) {
     const res = await getList();
+    console.log(res, "res--");
     ctx.body = {
       code: 200,
       data: res,
