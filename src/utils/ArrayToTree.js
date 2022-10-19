@@ -1,7 +1,7 @@
 function transArray(arr, parent_id = 0) {
   // console.log(arr, '-----------arr---------------');
   //  循环遍历
-  let newArr = []  //  专门收集转化后的数组
+  let newArr = []; //  专门收集转化后的数组
   console.log(arr);
   // arr.forEach((item) => {
   //   //  1-先要找第一层
@@ -19,7 +19,6 @@ function transArray(arr, parent_id = 0) {
   // })
   // return newArr
 }
-
 module.exports = {
-  transArray
-}
+  transArray,
+};

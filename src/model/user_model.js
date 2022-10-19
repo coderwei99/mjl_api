@@ -10,33 +10,33 @@ const User = seq.define("meijiali_user", {
   },
   password: {
     type: DataTypes.CHAR(64),
-    defaultValue: '',
+    defaultValue: "",
     comment: "密码",
   },
   open_id: {
     type: DataTypes.STRING(30),
     unique: true,
-    comment: "用户的标识，对当前公众号唯一"
+    comment: "用户的标识，对当前公众号唯一",
   },
   uid: {
     type: DataTypes.STRING(30),
     unique: true,
-    comment: "用户微信id"
+    comment: "用户微信id",
   },
   phone: {
     type: DataTypes.CHAR(11),
     unique: true,
-    comment: "用户电话号码"
+    comment: "用户电话号码",
   },
   access_token: {
     type: DataTypes.STRING,
     unique: true,
-    comment: "用户access_token"
+    comment: "用户access_token",
   },
   token: {
     type: DataTypes.STRING,
     unique: true,
-    comment: "用户token"
+    comment: "用户token",
   },
   is_admin: {
     type: DataTypes.BOOLEAN,
@@ -51,28 +51,33 @@ const User = seq.define("meijiali_user", {
   },
   city: {
     type: DataTypes.STRING,
-    defaultValue: '',
-    comment: "用户所在城市"
+    defaultValue: "",
+    comment: "用户所在城市",
   },
   province: {
     type: DataTypes.STRING,
-    defaultValue: '',
-    comment: "用户所在省城"
+    defaultValue: "",
+    comment: "用户所在省城",
   },
   avatarUrl: {
     type: DataTypes.STRING,
-    defaultValue: '',
-    comment: "用户头像"
+    defaultValue: "",
+    comment: "用户头像",
   },
   is_vip: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
-    comment: "是否是发廊，注册的时候输入邀请码就是商店，私人是没有邀请码的"
+    comment: "是否是发廊，注册的时候输入邀请码就是商店，私人是没有邀请码的",
   },
   appId: {
     type: DataTypes.STRING(10),
     allowNull: false,
-    comment: "用户渠道号"
+    comment: "用户渠道号",
+  },
+  user_shop_name: {
+    type: DataTypes.STRING,
+    defaultValue: "",
+    comment: "用户的店名 私人用户无店名",
   },
 });
 

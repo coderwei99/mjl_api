@@ -4,29 +4,29 @@ const {
   createUser,
   getUserInfo,
   updataById,
-  findUserOrCreate
+  findUserOrCreate,
 } = require("../server/user.server");
 
 const {
   userRegisterError,
   modifyPasswordfail,
 } = require("../consitant/error/error.type");
-const { appidError } = require("../consitant/error/user.erorType")
+const { appidError } = require("../consitant/error/user.erorType");
 
 const { JWT_SECRET } = require("../config/config.default");
 
-const { getWxUserInfo, getAccessToken } = require("../request/module/user")
+const { getWxUserInfo, getAccessToken } = require("../request/module/user");
 
 // 对openid进行加密函数
-const { toCryptOpenid } = require("../middleware/user.middleware")
+const { toCryptOpenid } = require("../middleware/user.middleware");
 
 // 导入对用户个人信息解密函数
-const { changeEncryptedData } = require("../utils/changeEncryptedData")
+const { changeEncryptedData } = require("../utils/changeEncryptedData");
 
 class UserController {
   async register(ctx, next) {
-    const { appid } = ctx.request.header
-    if (!appid) return ctx.app.emit("error", appidError, ctx)
+    const { appid } = ctx.request.header;
+    if (!appid) return ctx.app.emit("error", appidError, ctx);
 
     const { user_name, password, is_admin } = ctx.request.body;
     try {
@@ -89,26 +89,36 @@ class UserController {
   }
 
   async wxLogin(ctx, next) {
-    const body = ctx.request.body
+    const body = ctx.request.body;
     // 拿到用户的appid  标志用户是哪个渠道过来的
-    const { appid } = ctx.request.header
-    if (!appid) return ctx.app.emit("error", appidError, ctx)
-    const accessToken = await getAccessToken()
+    const { appid } = ctx.request.header;
+    if (!appid) return ctx.app.emit("error", appidError, ctx);
+    const accessToken = await getAccessToken();
 
     console.log(accessToken.access_token);
     // 发送请求换取openid
-    const res = await getWxUserInfo(body.code)
-    const token = jwt.sign({ openid: res.openid }, JWT_SECRET, { expiresIn: "90d" })
-    res.token = token
-    res.accessToken = accessToken.access_token
+    const res = await getWxUserInfo(body.code);
+    const token = jwt.sign({ openid: res.openid }, JWT_SECRET, {
+      expiresIn: "90d",
+    });
+    res.token = token;
+    res.accessToken = accessToken.access_token;
     // // 对前端给的用户加密信息进行解密
-    const userInfo = await changeEncryptedData(res.session_key, body.encryptedData, body.iv)
+    const userInfo = await changeEncryptedData(
+      res.session_key,
+      body.encryptedData,
+      body.iv
+    );
 
     console.log(userInfo);
     // 去数据库查询有无这个openid 有着修改  没有就进行修改  我们这里大部分都是小程序调用，后台调用的机会很少  所以大部分都是小程序端进行的登录功能
-    const _res = await findUserOrCreate(res, userInfo, body.invitation_code, appid)
-
-
+    const _res = await findUserOrCreate(
+      res,
+      userInfo,
+      body.invitation_code,
+      appid,
+      body.user_shop_name
+    );
 
     ctx.body = {
       code: 200,
@@ -116,12 +126,10 @@ class UserController {
       data: {
         ..._res,
         token,
-      }
-    }
+      },
+    };
     console.log(body);
   }
-
 }
 
 module.exports = new UserController();
-

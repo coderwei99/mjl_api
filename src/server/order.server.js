@@ -1,5 +1,6 @@
 const Order = require("../model/order_model");
-
+const User = require("../model/user_model");
+const Address = require("../model/address_model");
 class OrderServer {
   async create(params) {
     return await Order.create(params);
@@ -41,6 +42,26 @@ class OrderServer {
     return await Order.update({ status }, { where: id });
   }
 
+  async getUserInfoAndAddressInfo(user_id, address_id) {
+    const userInfo = await User.findOne({
+      where: {
+        id: user_id,
+      },
+      raw: true,
+    });
+    const addressInfo = await Address.findOne({
+      where: {
+        id: address_id,
+      },
+      raw: true,
+    });
+    console.log("------------");
+    return {
+      userInfo,
+      addressInfo,
+    };
+  }
+
   // 获取所有用户订单列表
   async findAllOrderList(params) {
     const { pageSize = 10, pageNum = 1, ...arg } = params;
@@ -51,6 +72,17 @@ class OrderServer {
       offset,
       raw: true,
     });
+    let i = 0;
+    while (i < rows.length) {
+      rows[i].userInfo = await User.findOne({
+        where: { id: rows[i].user_id },
+        attributes: ["id", "user_name", "phone", "avatarUrl", "is_vip"],
+      });
+      rows[i].addressInfo = await Address.findOne({
+        where: { id: rows[i].address_id },
+      });
+      i++;
+    }
     return {
       total: count,
       list: rows,

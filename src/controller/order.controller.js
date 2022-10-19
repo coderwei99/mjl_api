@@ -61,7 +61,6 @@ class OrderController {
   // 获取所有用户的订单列表
   async getOrderList(ctx) {
     const res = await findAllOrderList(ctx.request.body);
-    console.log(res, "---res----");
     res.list.forEach(item => {
       item.goods_info = JSON.parse(item.goods_info);
     });

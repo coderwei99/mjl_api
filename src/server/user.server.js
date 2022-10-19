@@ -1,6 +1,6 @@
 const User = require("../model/user_model");
 
-const { discardCode } = require("./code.server")
+const { discardCode } = require("./code.server");
 class UserServer {
   // 创建一条用户数据
   async createUser(user_name, password, appId, is_admin) {
@@ -10,7 +10,12 @@ class UserServer {
 
   // 查找用户
   async getUserInfo({ id, user_name, password, is_anmin }) {
-    console.log('----------------------------------------', { id, user_name, password, is_anmin });
+    console.log("----------------------------------------", {
+      id,
+      user_name,
+      password,
+      is_anmin,
+    });
     const whereOpt = {};
     id && Object.assign(whereOpt, { id });
     user_name && Object.assign(whereOpt, { user_name });
@@ -21,7 +26,7 @@ class UserServer {
       // attributes: ["id", "password", "is_admin", "user_name"],
       where: whereOpt,
     });
-    console.log(res, '---------------------');
+    console.log(res, "---------------------");
     return res ? res.dataValues : null;
   }
 
@@ -38,19 +43,25 @@ class UserServer {
   }
 
   // 查询用户 查询到返回用户信息 查询不到就新建
-  async findUserOrCreate({ openid, token, accessToken }, { nickName, gender, city, province, country, avatarUrl }, invitation_code, appId) {
+  async findUserOrCreate(
+    { openid, token, accessToken },
+    { nickName, gender, city, province, country, avatarUrl },
+    invitation_code,
+    appId,
+    user_shop_name
+  ) {
     try {
-      let res = await User.findOne({ where: { open_id: openid } })
+      let res = await User.findOne({ where: { open_id: openid } });
 
       // 如果有invitation_code 就说明用户是发廊用户 invitation_code是否正确在用户输入的时候就判断了 所以这里只有两种可能 一种是空字符串 另一种是正确的邀请码
-      let is_vip = false
+      let is_vip = false;
       if (invitation_code) {
-        is_vip = true
+        is_vip = true;
       }
       if (!res) {
         // 如果用户用了邀请码 这里需要废弃这个code
         if (is_vip) {
-          await discardCode(invitation_code)
+          await discardCode(invitation_code);
         }
         // 新用户 缓存数据到数据库
         res = await User.create({
@@ -61,17 +72,18 @@ class UserServer {
           province: province,
           country: country,
           avatarUrl: avatarUrl,
-          uid: '1010' + String(new Date().getTime()).slice(0, 7),
+          uid: "1010" + String(new Date().getTime()).slice(0, 7),
           phone: "",
           access_token: accessToken,
           token,
           is_vip,
-          appId
-        })
+          appId,
+          user_shop_name,
+        });
       }
-      return res.dataValues
+      return res.dataValues;
     } catch (error) {
-      console.log('error-=-------------------=========================', error);
+      console.log("error-=-------------------=========================", error);
     }
   }
 }
