@@ -8,11 +8,6 @@ const Orders = seq.define("meijiali_orders", {
     allowNull: false,
     comment: "用户id",
   },
-  address_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    comment: "地址id",
-  },
   goods_info: {
     type: DataTypes.TEXT,
     allowNull: false,
@@ -36,8 +31,23 @@ const Orders = seq.define("meijiali_orders", {
   },
   order_omment: {
     type: DataTypes.STRING(1500),
-    defaultValue: '',
+    defaultValue: "",
     comment: "订单备注",
+  },
+  order_address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    comment: "订单地址",
+  },
+  order_contact_phone: {
+    type: DataTypes.STRING(18),
+    allowNull: false,
+    comment: "订单收货电话",
+  },
+  order_contact_name: {
+    type: DataTypes.STRING(32),
+    allowNull: false,
+    comment: "订单收货人姓名",
   },
 });
 

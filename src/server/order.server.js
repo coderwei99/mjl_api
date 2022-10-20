@@ -16,7 +16,6 @@ class OrderServer {
       attributes: [
         "id",
         "user_id",
-        "address_id",
         "goods_info",
         "total",
         "order_number",
@@ -85,9 +84,6 @@ class OrderServer {
           "is_vip",
           "user_shop_name",
         ],
-      });
-      rows[i].addressInfo = await Address.findOne({
-        where: { id: rows[i].address_id },
       });
       i++;
     }
