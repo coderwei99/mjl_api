@@ -96,6 +96,7 @@ const getHotGoodsList = async (pageNum, pageSize) => {
     where: {
       is_hot: true,
     },
+    order: [["createdAt", "DESC"]],
   });
   return {
     pageNum,

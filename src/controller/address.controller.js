@@ -4,12 +4,11 @@ const {
   updata,
   remove,
   setDeafultAction,
-  findDefaultAddress
+  findDefaultAddress,
 } = require("../server/address.server");
 
 const { updataAddressError } = require("../consitant/error/error.type");
 class Address {
-
   // 用户添加地址
   async createAddress(ctx) {
     const {
@@ -22,7 +21,7 @@ class Address {
       detail,
       post_code,
       is_default,
-      city_province
+      city_province,
     } = ctx.request.body;
     const res = await create({
       user_id,
@@ -34,7 +33,7 @@ class Address {
       detail,
       post_code,
       is_default,
-      city_province
+      city_province,
     });
     if (res) {
       ctx.body = {
@@ -49,14 +48,14 @@ class Address {
 
   // 获取用户地址列表
   async findAddressList(ctx) {
-    const user_id = ctx.request.query.user_id
+    const user_id = ctx.request.query.user_id;
     const { rows, count } = await findAll(user_id);
     rows.forEach(item => {
-      item.dataValues.district = JSON.parse(item.dataValues.district)
-      item.dataValues.city = JSON.parse(item.dataValues.city)
-      item.dataValues.province = JSON.parse(item.dataValues.province)
-      item.dataValues.show = false
-    })
+      item.dataValues.district = JSON.parse(item.dataValues.district);
+      item.dataValues.city = JSON.parse(item.dataValues.city);
+      item.dataValues.province = JSON.parse(item.dataValues.province);
+      item.dataValues.show = false;
+    });
     ctx.body = {
       code: 200,
       message: "获取地址列表成功",
@@ -68,12 +67,12 @@ class Address {
   // 更新地址信息
   async updataAddress(ctx) {
     const user_id = ctx.state.user.id;
-    console.log('user_id---------', user_id);
+    console.log("user_id---------", user_id);
 
-    const address_info = ctx.request.body
-    address_info.district = JSON.stringify(address_info.district)
-    address_info.city = JSON.stringify(address_info.city)
-    address_info.province = JSON.stringify(address_info.province)
+    const address_info = ctx.request.body;
+    address_info.district = JSON.stringify(address_info.district);
+    address_info.city = JSON.stringify(address_info.city);
+    address_info.province = JSON.stringify(address_info.province);
 
     const res = await updata(address_info, ctx.request.params.id, user_id);
     if (res) {
@@ -89,7 +88,7 @@ class Address {
 
   async removeAddress(ctx) {
     const address_id = ctx.request.params.id;
-    console.log(ctx.request.body, '------');
+    console.log(ctx.request.body, "------");
     const { user_id } = ctx.request.body;
     const res = await remove({ address_id, user_id });
     if (res > 0) {
@@ -97,13 +96,13 @@ class Address {
         code: 200,
         message: "删除地址成功",
         data: res,
-      }
+      };
     } else {
       ctx.body = {
         code: 304,
         message: "没有找到对应的数据",
-        data: res
-      }
+        data: res,
+      };
     }
   }
 
@@ -119,14 +118,26 @@ class Address {
   }
 
   async getDefaultAddress(ctx) {
-    const user_id = ctx.state.user.id;
-    const res = await findDefaultAddress(user_id)
-    res.dataValues.district = JSON.parse(res.dataValues.district)
-    res.dataValues.city = JSON.parse(res.dataValues.city)
-    res.dataValues.province = JSON.parse(res.dataValues.province)
-    ctx.body = {
-      code: 200,
-      data: res
+    try {
+      const user_id = ctx.state.user.id;
+      const res = await findDefaultAddress(user_id);
+      if (res) {
+        res.district = JSON.parse(res.district);
+        res.city = JSON.parse(res.city);
+        res.province = JSON.parse(res.province);
+        ctx.body = {
+          code: 200,
+          data: res,
+        };
+      } else {
+        ctx.body = {
+          code: 100010,
+          data: {},
+          message: "用户暂无默认地址",
+        };
+      }
+    } catch (error) {
+      console.log("error", error);
     }
   }
 }

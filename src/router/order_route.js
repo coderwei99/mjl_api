@@ -21,6 +21,6 @@ router.get("/", diffChannelNo, getUserOrderList);
 router.put("/:id", diffChannelNo, updataOrder);
 
 // 获取订单列表
-router.post("/list", getOrderList);
+router.post("/list", diffChannelNo, getOrderList);
 
 module.exports = router;

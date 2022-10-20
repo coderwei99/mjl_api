@@ -13,10 +13,26 @@ const {
 class cartController {
   async addGoods(ctx) {
     // 传递给server层user_id goods_id
-    let { goods_id, user_id, specification, count, name, unit_price } = ctx.request.body;
-    specification = JSON.stringify(specification)
+    let {
+      goods_id,
+      user_id,
+      specification,
+      count,
+      name,
+      unit_price,
+      total_price,
+    } = ctx.request.body;
+    specification = JSON.stringify(specification);
     // const user_id = ctx.state.user.id;
-    const res = await createOrUpdate({ user_id, goods_id, specification, count, name, unit_price });
+    const res = await createOrUpdate({
+      user_id,
+      goods_id,
+      specification,
+      count,
+      name,
+      unit_price,
+      total_price,
+    });
     try {
       if (res === "1") {
         ctx.app.emit("error", userHasInsql, ctx);
@@ -36,7 +52,7 @@ class cartController {
 
   async getCartsGoods(ctx) {
     const { pageNumber = 1, pageSize = 10 } = ctx.request.query;
-    const user_id = ctx.request.query.user_id
+    const user_id = ctx.request.query.user_id;
 
     const res = await findCartsGoods({ pageNumber, pageSize, user_id });
 

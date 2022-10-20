@@ -71,12 +71,20 @@ class OrderServer {
       limit: pageSize * 1,
       offset,
       raw: true,
+      order: [["createdAt", "DESC"]],
     });
     let i = 0;
     while (i < rows.length) {
       rows[i].userInfo = await User.findOne({
         where: { id: rows[i].user_id },
-        attributes: ["id", "user_name", "phone", "avatarUrl", "is_vip"],
+        attributes: [
+          "id",
+          "user_name",
+          "phone",
+          "avatarUrl",
+          "is_vip",
+          "user_shop_name",
+        ],
       });
       rows[i].addressInfo = await Address.findOne({
         where: { id: rows[i].address_id },

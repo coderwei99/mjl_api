@@ -22,7 +22,7 @@ const Carts = seq.define("meijiali_cart", {
   specification_name: {
     type: DataTypes.STRING,
     allowNull: false,
-    comment: "规格的名字"
+    comment: "规格的名字",
   },
   count: {
     type: DataTypes.INTEGER,
@@ -40,7 +40,12 @@ const Carts = seq.define("meijiali_cart", {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
     comment: "商品单价",
-  }
+  },
+  total_price: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: false,
+    comment: "商品总价 数量*单价",
+  },
 });
 
 // Carts.sync({ force: true });

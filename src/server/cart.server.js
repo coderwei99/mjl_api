@@ -5,7 +5,15 @@ const Goods = require("../model/goods_model");
 const Cart = require("../model/cart_model");
 
 class cartServer {
-  async createOrUpdate({ user_id, goods_id, specification, count, name, unit_price }) {
+  async createOrUpdate({
+    user_id,
+    goods_id,
+    specification,
+    count,
+    name,
+    unit_price,
+    total_price,
+  }) {
     //-----------------------------start-----------------------------------------
     // 这个位置的两个判断条件可以考虑抽离成一个中间件，尽量保证createOrUpdate方法的职责单一
 
@@ -33,24 +41,32 @@ class cartServer {
         [Op.and]: {
           user_id,
           goods_id,
-          specification_name: name
+          specification_name: name,
         },
       },
     });
     if (!res) {
       // 如果未查询到数据，就新增一条记录到购物车
-      console.log('specification----------------', specification, name);
-      const reslut = await Cart.create({ goods_id, user_id, specification, specification_name: name, count, unit_price });
+      console.log("specification----------------", specification, name);
+      const reslut = await Cart.create({
+        goods_id,
+        user_id,
+        specification,
+        specification_name: name,
+        count,
+        unit_price,
+        total_price,
+      });
       return reslut;
     } else {
       // 1. 如果查询到数据，考虑两种情况，
       //   - 如果是规格一样的话 更新cart的number数量 ===> 数据库的number数量+specification.count ----> 注意这里返回的是修改后的数据
       //   - 如果规格不一样  就说明新增一条数据到数据库  不同规格代表不同的商品
-      // 规格一样的情况下 数据库的number数量+specification.count
-      const reslut = await res.increment("count", { by: count });
+      // 规格一样的情况下 数据库的number数量+specification.count 同时更新数据的价格字段
+      const reslut = await res.increment({ count, total_price });
+
       // 这里需要调用.reload()方法，因为increment返回的是更新前的数量，我们需要返回递增后的数据
       return await reslut.reload();
-
     }
   }
 
@@ -61,7 +77,14 @@ class cartServer {
       where: {
         user_id,
       },
-      attributes: ["id", "count", "selected", "specification_name", "unit_price"],
+      attributes: [
+        "id",
+        "count",
+        "selected",
+        "specification_name",
+        "unit_price",
+        "total_price",
+      ],
       limit: pageSize * 1,
       offset,
       include: {

@@ -1,23 +1,21 @@
 const Address = require("../model/address_model");
 
 class AddressServer {
-  async create(
-    {
-      user_id,
-      consignee,
-      phone,
-      district,
-      city,
-      province,
-      detail,
-      post_code,
-      is_default,
-      city_province
-    }
-  ) {
-    district = JSON.stringify(district)
-    city = JSON.stringify(city)
-    province = JSON.stringify(province)
+  async create({
+    user_id,
+    consignee,
+    phone,
+    district,
+    city,
+    province,
+    detail,
+    post_code,
+    is_default,
+    city_province,
+  }) {
+    district = JSON.stringify(district);
+    city = JSON.stringify(city);
+    province = JSON.stringify(province);
     const res = await Address.create({
       user_id,
       consignee,
@@ -28,7 +26,7 @@ class AddressServer {
       detail,
       post_code,
       is_default,
-      city_province
+      city_province,
     });
     return res ? res : null;
   }
@@ -49,7 +47,7 @@ class AddressServer {
         "detail",
         "post_code",
         "is_default",
-        "city_province"
+        "city_province",
       ],
     });
     return {
@@ -105,10 +103,12 @@ class AddressServer {
     const res = await Address.findOne({
       where: {
         user_id,
-        is_default: true
-      }
-    })
-    return res
+        is_default: true,
+      },
+      raw: true,
+    });
+    console.log(res, "res");
+    return res;
   }
 }
 
