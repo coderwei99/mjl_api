@@ -1,5 +1,5 @@
 const TripRequest = require("../request");
-const axios = require("axios")
+const axios = require("axios");
 const {
   appid,
   secret,
@@ -11,30 +11,36 @@ const {
 // 获取模板消息的access_token
 function getAccessToken() {
   return TripRequest.get({
-    url: `cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${secret}`
-  })
+    url: `cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${secret}`,
+  });
 }
 
 // 进行消息推送
 
-
 function postSendTemplate(access_token, data) {
   // 1.
-  axios.post(`https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${access_token}`, {
-    touser,
-    template_id,
-    url,
-    data,
-    // "miniprogram": {
-    //   "appid": "wx65550dc45bb78a1f",
-    //   "pagepath": "index"
-    // },
-  })
+  axios
+    .post(
+      `https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${access_token}`,
+      {
+        touser,
+        template_id,
+        url,
+        data,
+        // "miniprogram": {
+        //   "appid": "wx65550dc45bb78a1f",
+        //   "pagepath": "index"
+        // },
+      }
+    )
     .then(res => {
-      console.log('res', res)
+      console.log("res", res);
+      // TODO 判断res的code  发送失败也要返回false
+      return true;
     })
     .catch(function (error) {
-      console.log('error===============', error);
+      console.log("error===============", error);
+      return false;
     });
   // 2.
   // return TripRequest.post({
@@ -49,8 +55,7 @@ function postSendTemplate(access_token, data) {
   // })
 }
 
-
 module.exports = {
   getAccessToken,
-  postSendTemplate
-}
+  postSendTemplate,
+};
