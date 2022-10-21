@@ -19,7 +19,8 @@ WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
     decoded += decipher.final("utf8");
     decoded = JSON.parse(decoded);
   } catch (err) {
-    throw new Error("Illegal Buffer");
+    console.log(err, "error  微信加密解密");
+    throw new Error("Illegal Buffer", err);
   }
 
   if (decoded.watermark.appid !== this.appId) {

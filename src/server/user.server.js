@@ -44,7 +44,7 @@ class UserServer {
 
   // 查询用户 查询到返回用户信息 查询不到就新建
   async findUserOrCreate(
-    { openid, token, accessToken },
+    { openid, token },
     { nickName, gender, city, province, country, avatarUrl },
     invitation_code,
     appId,
@@ -74,7 +74,6 @@ class UserServer {
           avatarUrl: avatarUrl,
           uid: "1010" + String(new Date().getTime()).slice(0, 7),
           phone: "",
-          access_token: accessToken,
           token,
           is_vip,
           appId,

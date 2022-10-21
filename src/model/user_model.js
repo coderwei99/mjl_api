@@ -28,11 +28,6 @@ const User = seq.define("meijiali_user", {
     unique: true,
     comment: "用户电话号码",
   },
-  access_token: {
-    type: DataTypes.STRING,
-    unique: true,
-    comment: "用户access_token",
-  },
   token: {
     type: DataTypes.STRING,
     unique: true,
