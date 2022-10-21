@@ -49,6 +49,11 @@ const Orders = seq.define("meijiali_orders", {
     allowNull: false,
     comment: "订单收货人姓名",
   },
+  shop_name: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    comment: "用户注册的时候填写的店铺名字",
+  },
 });
 
 // Orders.sync({ force: true });
