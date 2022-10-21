@@ -65,14 +65,19 @@ class OrderServer {
 
   // 获取所有用户订单列表
   async findAllOrderList(params) {
-    const { pageSize = 10, pageNum = 1, ...arg } = params;
+    const { pageSize = 10, pageNum = 1, shop_name, status } = params;
     // 模糊查询
+    let where = {};
+    shop_name && Object.assign(where, { shop_name });
+    status && Object.assign(where, { status });
+    where = handleLike(where);
 
     const offset = (pageNum - 1) * pageSize;
     const { count, rows } = await Order.findAndCountAll({
       limit: pageSize * 1,
       offset,
       raw: true,
+      where,
       order: [["createdAt", "DESC"]],
     });
     let i = 0;
