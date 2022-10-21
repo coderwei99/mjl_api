@@ -18,6 +18,7 @@ class OrderController {
         order_address,
         order_contact_phone,
         order_contact_name,
+        shop_name,
       } = ctx.request.body;
       // 对goods_info 进行序列化
       goods_info = JSON.stringify(goods_info);
@@ -33,6 +34,7 @@ class OrderController {
         order_address,
         order_contact_name,
         order_contact_phone,
+        shop_name,
       });
       ctx.body = {
         code: 200,
