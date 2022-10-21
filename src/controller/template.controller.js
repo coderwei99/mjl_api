@@ -18,7 +18,7 @@ class Template {
         color: "#FFC0CB",
       },
     });
-    console.log("res", res);
+    console.log("sendTemplate", res);
     if (!res) return ctx.app.emit("error", sendTemplateError, ctx);
     ctx.body = {
       code: 200,
