@@ -78,6 +78,7 @@ const findAllGoods = async (pageNum, pageSize, params) => {
     offset,
     raw: true,
     where,
+    paranoid: false,
     order: [["updatedAt", "DESC"]],
   });
   return {
@@ -96,6 +97,9 @@ const getHotGoodsList = async (pageNum, pageSize) => {
     offset,
     where: {
       is_hot: true,
+      // deletedAt: {
+      //   [Op.is]: null,
+      // },
     },
     order: [["createdAt", "DESC"]],
   });

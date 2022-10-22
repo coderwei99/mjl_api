@@ -85,6 +85,7 @@ class GoodsController {
     }
   }
   async restore(ctx) {
+    console.log(ctx.params.id, "id");
     const res = await restoreGood(ctx.params.id);
     try {
       if (res) {
