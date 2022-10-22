@@ -6,7 +6,7 @@ const {
   updataGoodsError,
 } = require("../consitant/error/error.type");
 
-const { createGoodError } = require("../consitant/error/goods.errorType")
+const { createGoodError } = require("../consitant/error/goods.errorType");
 
 const {
   createGoods,
@@ -101,16 +101,15 @@ class GoodsController {
     }
   }
   async findAll(ctx) {
-    const { pageNum = 1, pageSize = 10, ...params } = ctx.request.body;
-
-    const res = await findAllGoods(pageNum, pageSize, params);
-    console.log(res, 'res-------------');
-    res.list.forEach(item => {
-      item.specification = JSON.parse(item.specification)
-      item.swiper_image = JSON.parse(item.swiper_image)
-      item.is_hot = !!item.is_hot
-    })
     try {
+      const { pageNum = 1, pageSize = 10, ...params } = ctx.request.body;
+      const res = await findAllGoods(pageNum, pageSize, params);
+      console.log(res, "res-------------");
+      res.list.forEach(item => {
+        item.specification = JSON.parse(item.specification);
+        item.swiper_image = JSON.parse(item.swiper_image);
+        item.is_hot = !!item.is_hot;
+      });
       ctx.body = {
         code: 200,
         message: "获取商品列表成功",
@@ -124,43 +123,43 @@ class GoodsController {
   // 查询某个分类的商品
   async findCategoryGoods(ctx) {
     try {
-      const res = await findCategoryGoodsList(ctx.request.query)
-      console.log(res, 'res');
+      const res = await findCategoryGoodsList(ctx.request.query);
+      console.log(res, "res");
       if (res.list.length != 0) {
         res.list.forEach(item => {
-          item.swiper_image = JSON.parse(item.swiper_image)
-          item.specification = JSON.parse(item.specification)
+          item.swiper_image = JSON.parse(item.swiper_image);
+          item.specification = JSON.parse(item.specification);
         });
       }
       ctx.body = {
         code: 200,
         message: "获取分类商品成功",
-        data: res
-      }
+        data: res,
+      };
     } catch (error) {
       console.log(error);
-      createGoodError.data = error.errors
-      ctx.app.emit("error", createGoodError, ctx)
+      createGoodError.data = error.errors;
+      ctx.app.emit("error", createGoodError, ctx);
     }
   }
 
   // 查询火热商品
   async findHotGoodsList(ctx) {
-    const { pageNum = 1, pageSize = 10 } = ctx.request.query
-    const hotGoods = await getHotGoodsList(pageNum, pageSize)
-    console.log('hotGoods', hotGoods);
+    const { pageNum = 1, pageSize = 10 } = ctx.request.query;
+    const hotGoods = await getHotGoodsList(pageNum, pageSize);
+    console.log("hotGoods", hotGoods);
     if (hotGoods.list.length != 0) {
       hotGoods.list.forEach(item => {
-        item.swiper_image = JSON.parse(item.swiper_image)
-        item.specification = JSON.parse(item.specification)
+        item.swiper_image = JSON.parse(item.swiper_image);
+        item.specification = JSON.parse(item.specification);
       });
     }
 
     ctx.body = {
       code: 200,
       message: "查询火热商品成功",
-      data: hotGoods
-    }
+      data: hotGoods,
+    };
   }
 }
 module.exports = new GoodsController();

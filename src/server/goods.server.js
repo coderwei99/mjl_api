@@ -78,6 +78,7 @@ const findAllGoods = async (pageNum, pageSize, params) => {
     offset,
     raw: true,
     where,
+    order: [["updatedAt", "DESC"]],
   });
   return {
     pageNum,
