@@ -11,7 +11,7 @@ module.exports = {
   },
   deleteCategoryError: {
     code: "11501",
-    message: "无效的id,请检查需要删除的分类是否有子分类",
+    message: "请检查需要删除的分类是否有子分类",
     data: null,
   },
 };

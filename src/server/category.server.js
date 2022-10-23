@@ -35,8 +35,15 @@ class CategoryServer {
   }
 
   // 修改分类
-  async updateCategory(params) {
-    const { id, category_name, parent_id } = params;
+  async updateCategory(params, ctx) {
+    const { id, category_name, parent_id = 0 } = params;
+    // 如果当前分类是一级菜单 不允许修改他的parent_id
+    const categoryInfo = await Category.findByPk(id);
+    // console.log(categoryInfo, "---");
+    if (categoryInfo.dataValues.parent_id == 0 && parent_id)
+      return "parent_id is not allow";
+
+    console.log({ id, category_name, parent_id });
     const res = await Category.update(
       {
         category_name,

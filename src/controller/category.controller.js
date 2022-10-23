@@ -58,7 +58,9 @@ class CateGoryController {
   async editCategory(ctx) {
     const { id } = ctx.request.params;
     const { category_name, parent_id } = ctx.request.body;
-    const res = await updateCategory({ id, category_name, parent_id });
+    const res = await updateCategory({ id, category_name, parent_id }, ctx);
+    if (res == "parent_id is not allow")
+      return ctx.app.emit("error", deleteCategoryError, ctx);
     if (!res) return ctx.app.emit("error", editCategoryError, ctx);
     ctx.body = {
       code: 200,
