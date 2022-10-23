@@ -32,10 +32,10 @@ class CodeServer {
       const { is_used, shop_name } = params;
       console.log({ is_used, shop_name });
       let where = {};
-      is_used !== undefined && Object.assign(where, { is_used });
+      is_used !== "" && Object.assign(where, { is_used });
       shop_name && Object.assign(where, { shop_name });
-      console.log(where);
       where = handleLike(where);
+      console.log(where);
 
       const offset = (pageNum - 1) * pageSize;
       const { count, rows } = await Code.findAndCountAll({
@@ -43,6 +43,7 @@ class CodeServer {
         offset,
         raw: true,
         where,
+        order: [["createdAt", "DESC"]],
       });
 
       return {
