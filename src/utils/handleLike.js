@@ -15,7 +15,7 @@ function handleLike(obj) {
   if (parent_id) {
     where["parent_id"] = parent_id;
   }
-  if (is_used) {
+  if (is_used !== undefined) {
     where["is_used"] = is_used;
   }
   if (status) {
