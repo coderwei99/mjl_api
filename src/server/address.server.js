@@ -100,14 +100,23 @@ class AddressServer {
   }
 
   async findDefaultAddress(user_id) {
-    const res = await Address.findOne({
+    let res = await Address.findOne({
       where: {
         user_id,
         is_default: true,
       },
       raw: true,
     });
-    console.log(res, "res");
+    console.log(res, "findDefaultAddressres");
+    // 如果用户没有默认地址 就随便找个地址给他
+    if (!res) {
+      res = await Address.findOne({
+        where: {
+          user_id,
+        },
+        raw: true,
+      });
+    }
     return res;
   }
 }
