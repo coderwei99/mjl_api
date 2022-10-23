@@ -36,10 +36,11 @@ class CategoryServer {
 
   // 修改分类
   async updateCategory(params) {
-    const { id, category_name } = params;
+    const { id, category_name, parent_id } = params;
     const res = await Category.update(
       {
         category_name,
+        parent_id,
       },
       {
         where: {
