@@ -2,11 +2,14 @@ const {
   create,
   getList,
   deleteCategory,
+  updateCategory,
 } = require("../server/category.server");
 
 // 导入错误
 const {
   createCategoryError,
+  editCategoryError,
+  deleteCategoryError,
 } = require("../consitant/error/category.errorType");
 
 // 导入工具函数
@@ -43,19 +46,25 @@ class CateGoryController {
   async removeCategory(ctx) {
     console.log(ctx.params);
     const res = await deleteCategory(ctx.params);
-    if (res) {
-      ctx.body = {
-        code: 200,
-        data: res,
-        message: "删除列表成功",
-      };
-    } else {
-      ctx.body = {
-        code: 210,
-        data: res,
-        message: "无效的id,请检查需要删除的分类是否有子分类",
-      };
-    }
+    if (!res) return ctx.app.emit("error", deleteCategoryError, ctx);
+    ctx.body = {
+      code: 200,
+      data: res,
+      message: "删除列表成功",
+    };
+  }
+
+  // 修改分类
+  async editCategory(ctx) {
+    const { id } = ctx.request.params;
+    const { category_name } = ctx.request.body;
+    const res = await updateCategory({ id, category_name });
+    if (!res) return ctx.app.emit("error", editCategoryError, ctx);
+    ctx.body = {
+      code: 200,
+      data: res,
+      message: "修改分类成功",
+    };
   }
 }
 

@@ -33,6 +33,23 @@ class CategoryServer {
 
     return result == 1 ? true : false;
   }
+
+  // 修改分类
+  async updateCategory(params) {
+    const { id, category_name } = params;
+    const res = await Category.update(
+      {
+        category_name,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    console.log(res, "----", res[0]);
+    return res[0] ? true : false;
+  }
 }
 
 module.exports = new CategoryServer();

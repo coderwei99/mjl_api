@@ -7,6 +7,7 @@ const {
   createCategory,
   getCategoryList,
   removeCategory,
+  editCategory,
 } = require("../controller/category.controller");
 
 // 新建分类
@@ -17,4 +18,8 @@ router.post("/lists", diffChannelNo, getCategoryList);
 
 // 删除分类
 router.delete("/:id", diffChannelNo, removeCategory);
+
+// 修改分类
+router.put("/:id", diffChannelNo, editCategory);
+
 module.exports = router;
