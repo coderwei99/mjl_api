@@ -10,7 +10,7 @@ function handleLike(obj) {
     sale_or_not,
     ...info
   } = obj;
-  let keys = Reflect.ownKeys((info = {}));
+  let keys = Reflect.ownKeys(info);
   let where = {};
   keys.forEach(item => {
     where[item] = {
