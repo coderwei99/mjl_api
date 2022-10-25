@@ -1,5 +1,6 @@
 const Category = require("../model/category.model");
 
+const { findCategoryGoodsList } = require("../server/goods.server");
 class CategoryServer {
   // 创建分类
   async create({ parent_id, category_name }) {
@@ -27,6 +28,9 @@ class CategoryServer {
       raw: true,
     });
     if (haveSonCategory) return;
+    // 如果这个分类不是一级菜单 说明他下面没有子菜单 那么还需要去考虑该子分类下面有没有对应的商品 如果有的话 也同样不允许用户删除该分类 否则就会造成有部分商品查询不到他的分类名字
+    const category_goods = await findCategoryGoodsList({ parentId: params.id });
+    if (category_goods.list.length !== 0) return "category have goods";
     const result = await Category.destroy({
       where: params,
     });

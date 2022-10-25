@@ -10,6 +10,7 @@ const {
   createCategoryError,
   editCategoryError,
   deleteCategoryError,
+  deleteCategoryHaveGoodsError,
 } = require("../consitant/error/category.errorType");
 
 // 导入工具函数
@@ -46,6 +47,8 @@ class CateGoryController {
   async removeCategory(ctx) {
     console.log(ctx.params);
     const res = await deleteCategory(ctx.params);
+    if (res == "category have goods")
+      return ctx.app.emit("error", deleteCategoryHaveGoodsError, ctx);
     if (!res) return ctx.app.emit("error", deleteCategoryError, ctx);
     ctx.body = {
       code: 200,
