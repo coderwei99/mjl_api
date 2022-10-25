@@ -66,11 +66,13 @@ const findAllGoods = async (pageNum, pageSize, params) => {
     // goods_img,
     // retail_price,
     // specification,
+    sale_or_not,
   } = params;
   let where = {};
   goods_name && Object.assign(where, { goods_name });
-  is_hot !== undefined && Object.assign(where, { is_hot }); //is_hot本来就是布尔值  所以不能直接判断真假  需要判断是否为undefined 来确定前端有没有传递这个参数
+  is_hot !== undefined && is_hot !== "" && Object.assign(where, { is_hot }); //is_hot本来就是布尔值  所以不能直接判断真假  需要判断是否为undefined 来确定前端有没有传递这个参数
   parent_id && Object.assign(where, { parent_id });
+  sale_or_not && Object.assign(where, { sale_or_not });
   where = handleLike(where);
   console.log(where, "----");
   const offset = (pageNum - 1) * pageSize;
@@ -120,6 +122,7 @@ const findLikeGoodsList = async params => {
 
 // 上传图片
 const uploadImage = async ({ name }, basename) => {
+  console.log(basename);
   const url = basename;
   const image_key = basename.slice(7, 16);
   const res = await Uploads.create({ url, image_key, name });
