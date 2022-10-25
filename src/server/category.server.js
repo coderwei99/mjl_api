@@ -40,7 +40,9 @@ class CategoryServer {
 
   // 修改分类
   async updateCategory(params, ctx) {
-    const { id, category_name, parent_id = 0 } = params;
+    let { id, category_name, parent_id = 0 } = params;
+    if (parent_id == null) parent_id = 0;
+    console.log({ id, category_name, parent_id });
     // 如果当前分类是一级菜单 不允许修改他的parent_id
     const categoryInfo = await Category.findByPk(id);
     // console.log(categoryInfo, "---");
