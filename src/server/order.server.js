@@ -28,6 +28,7 @@ class OrderServer {
         user_id,
         ...status,
       },
+      order: [["createdAt", "DESC"]],
     });
     return {
       total: count,
