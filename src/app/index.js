@@ -13,14 +13,15 @@ app.use(
   KoaBody({
     multipart: true,
     formidable: {
-      uploadDir: path.join(__dirname, "../uploads"),
+      uploadDir: path.join(__dirname, "../images"),
       keepExtensions: true,
     },
     parsedMethods: ["POST", "PUT", "PATCH", "DELETE"],
   })
 );
+app.use(koaStatic(path.join(__dirname, "../images")));
 
-app.use(koaStatic(path.join(__dirname, "../uploads")));
+console.log(path.join(__dirname, "../images"));
 app.use(parameter(app));
 app.use(router.routes()).use(router.allowedMethods());
 

@@ -1,12 +1,16 @@
 const path = require("path");
-
+const fs = require("fs");
 const {
   upLoadImageError,
   publishGoodsError,
   updataGoodsError,
 } = require("../consitant/error/error.type");
 
-const { createGoodError } = require("../consitant/error/goods.errorType");
+const {
+  createGoodError,
+  unSupportedFileType,
+  removeUploadImageError,
+} = require("../consitant/error/goods.errorType");
 
 const {
   createGoods,
@@ -16,24 +20,62 @@ const {
   findAllGoods,
   findCategoryGoodsList,
   getHotGoodsList,
+  uploadImage,
 } = require("../server/goods.server");
+
+const { findFileInfo, deleteImage } = require("../server/upload.server");
+
 class GoodsController {
   async upLoad(ctx, next) {
     // ctx.body = "T1";
     const { file } = ctx.request.files;
     console.log(file);
+    const fileTypes = ["image/jpeg", "image/png"];
     if (file) {
+      if (!fileTypes.includes(file.type))
+        return ctx.app.emit("error", unSupportedFileType, ctx);
+      const basename = path.basename(file.path);
+      const res = await uploadImage(file, basename);
+      if (!res) return ctx.app.emit("error", upLoadImageError, ctx);
       ctx.body = {
         code: 200,
         message: "上传图片成功",
         data: {
-          goods_img: path.basename(file.path),
+          ...res.dataValues,
+          goods_img: `${ctx.origin}/images/${basename}`,
         },
       };
     } else {
       ctx.app.emit("error", upLoadImageError, ctx);
     }
   }
+
+  async removeUpload(ctx) {
+    try {
+      let { id } = ctx.request.body;
+      // const res_code = fs.unlinkSync(url);
+      let { url } = await findFileInfo(id);
+      // const deleteImageRes = await deleteImage(image_key);
+      url = path.join(__dirname, "../images/") + url;
+      if (!fs.existsSync(url))
+        return ctx.app.emit("error", removeUploadImageError, ctx);
+
+      //在服务器这出这张图片
+      fs.unlinkSync(url);
+
+      // 在数据库删除这条记录
+      const res = await deleteImage(id);
+      if (!res) return ctx.app.emit("error", removeUploadImageError, ctx);
+      ctx.body = {
+        code: 200,
+        data: res,
+        message: "删除图片成功",
+      };
+    } catch (error) {
+      console.error("remove uplaod image error", error);
+    }
+  }
+
   async create(ctx, next) {
     // ctx.body = "111";
     const goods = ctx.request.body;

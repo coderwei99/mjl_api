@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const Goods = require("../model/goods_model");
+const Uploads = require("../model/upload_model");
 
 const { handleLike } = require("../utils/handleLike");
 const createGoods = async goods => {
@@ -117,6 +118,13 @@ const findLikeGoodsList = async params => {
   const res = await Goods.findAndCountAll({});
 };
 
+// 上传图片
+const uploadImage = async ({ name }, basename) => {
+  const url = basename;
+  const image_key = basename.slice(7, 16);
+  const res = await Uploads.create({ url, image_key, name });
+  return res;
+};
 module.exports = {
   createGoods,
   updataGoods,
@@ -126,4 +134,5 @@ module.exports = {
   findCategoryGoodsList,
   getHotGoodsList,
   findLikeGoodsList,
+  uploadImage,
 };

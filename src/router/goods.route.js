@@ -13,6 +13,7 @@ const {
   findAll,
   findCategoryGoods,
   findHotGoodsList,
+  removeUpload,
 } = require("../controller/goods.controller");
 
 const { goodsFarmat } = require("../middleware/goods.middleware");
@@ -20,6 +21,9 @@ const { goodsFarmat } = require("../middleware/goods.middleware");
 const router = new Router({ prefix: "/goods" });
 // 商品图片上传： auth --->登录    hadAdminPermission ---> 是否拥有权限
 router.post("/upload", diffChannelNo, hadAdminPermission, upLoad);
+
+// 删除上传的商品图片： auth --->登录    hadAdminPermission ---> 是否拥有权限
+router.post("/upload/remove", diffChannelNo, hadAdminPermission, removeUpload);
 
 // 发布商品
 router.post("/", diffChannelNo, goodsFarmat, create);
